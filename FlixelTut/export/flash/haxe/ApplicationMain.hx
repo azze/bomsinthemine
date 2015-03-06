@@ -8,10 +8,12 @@ class ApplicationMain {
 	public static var config:lime.app.Config;
 	public static var preloader:openfl.display.Preloader;
 	
+	private static var app:lime.app.Application;
+	
 	
 	public static function create ():Void {
 		
-		var app = new openfl.display.Application ();
+		app = new openfl.display.Application ();
 		app.create (config);
 		
 		var display = new flixel.system.FlxPreloader ();
@@ -20,7 +22,7 @@ class ApplicationMain {
 		preloader.onComplete = init;
 		preloader.create (config);
 		
-		#if (js && html5)
+		#if js
 		var urls = [];
 		var types = [];
 		
@@ -58,6 +60,10 @@ class ApplicationMain {
 		
 		
 		urls.push ("assets/images/Game_Template_Miner_Sid.png");
+		types.push (AssetType.IMAGE);
+		
+		
+		urls.push ("assets/images/Game_Template_Miner_Trevor.png");
 		types.push (AssetType.IMAGE);
 		
 		
@@ -109,6 +115,10 @@ class ApplicationMain {
 		types.push (AssetType.IMAGE);
 		
 		
+		urls.push ("assets/images/Trevor_Thumb_v1.png");
+		types.push (AssetType.IMAGE);
+		
+		
 		urls.push ("assets/music/music-goes-here.txt");
 		types.push (AssetType.TEXT);
 		
@@ -126,26 +136,12 @@ class ApplicationMain {
 		
 		
 		
-		if (config.assetsPrefix != null) {
-			
-			for (i in 0...urls.length) {
-				
-				if (types[i] != AssetType.FONT) {
-					
-					urls[i] = config.assetsPrefix + urls[i];
-					
-				}
-				
-			}
-			
-		}
-		
 		preloader.load (urls, types);
 		#end
 		
 		var result = app.exec ();
 		
-		#if (sys && !emscripten)
+		#if sys
 		Sys.exit (result);
 		#end
 		
@@ -156,7 +152,7 @@ class ApplicationMain {
 		
 		var loaded = 0;
 		var total = 0;
-		var library_onLoad = function (__) {
+		var library_onLoad = function (_) {
 			
 			loaded++;
 			
@@ -202,7 +198,7 @@ class ApplicationMain {
 		}
 		
 		#if js
-		#if (munit || utest)
+		#if munit
 		flash.Lib.embed (null, 1280, 960, "000000");
 		#end
 		#else
@@ -214,10 +210,12 @@ class ApplicationMain {
 	
 	public static function start ():Void {
 		
-		var hasMain = false;
-		var entryPoint = Type.resolveClass ("Main");
+		openfl.Lib.current.stage.align = openfl.display.StageAlign.TOP_LEFT;
+		openfl.Lib.current.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;
 		
-		for (methodName in Type.getClassFields (entryPoint)) {
+		var hasMain = false;
+		
+		for (methodName in Type.getClassFields (Main)) {
 			
 			if (methodName == "main") {
 				
@@ -230,17 +228,17 @@ class ApplicationMain {
 		
 		if (hasMain) {
 			
-			Reflect.callMethod (entryPoint, Reflect.field (entryPoint, "main"), []);
+			Reflect.callMethod (Main, Reflect.field (Main, "main"), []);
 			
 		} else {
 			
 			var instance:DocumentClass = Type.createInstance (DocumentClass, []);
 			
-			/*if (Std.is (instance, openfl.display.DisplayObject)) {
+			if (Std.is (instance, openfl.display.DisplayObject)) {
 				
 				openfl.Lib.current.addChild (cast instance);
 				
-			}*/
+			}
 			
 		}
 		
@@ -264,7 +262,8 @@ class ApplicationMain {
 }
 
 
-@:build(DocumentClass.build())
+#if flash @:build(DocumentClass.buildFlash())
+#else @:build(DocumentClass.build()) #end
 @:keep class DocumentClass extends Main {}
 
 
@@ -291,7 +290,7 @@ class DocumentClass {
 				
 				var method = macro {
 					
-					openfl.Lib.current.addChild (this);
+					this.stage = flash.Lib.current.stage;
 					super ();
 					dispatchEvent (new openfl.events.Event (openfl.events.Event.ADDED_TO_STAGE, false, false));
 					
@@ -299,6 +298,34 @@ class DocumentClass {
 				
 				fields.push ({ name: "new", access: [ APublic ], kind: FFun({ args: [], expr: method, params: [], ret: macro :Void }), pos: Context.currentPos () });
 				
+				return fields;
+				
+			}
+			
+			searchTypes = searchTypes.superClass.t.get ();
+			
+		}
+		
+		return null;
+		
+	}
+	
+	
+	macro public static function buildFlash ():Array<Field> {
+		
+		var classType = Context.getLocalClass ().get ();
+		var searchTypes = classType;
+		
+		while (searchTypes.superClass != null) {
+			
+			if (searchTypes.pack.length == 2 && searchTypes.pack[1] == "display" && searchTypes.name == "DisplayObject") {
+				
+				var fields = Context.getBuildFields ();
+				var method = macro {
+					return flash.Lib.current.stage;
+				}
+				
+				fields.push ({ name: "get_stage", access: [ APrivate ], meta: [ { name: ":getter", params: [ macro stage ], pos: Context.currentPos() } ], kind: FFun({ args: [], expr: method, params: [], ret: macro :flash.display.Stage }), pos: Context.currentPos() });
 				return fields;
 				
 			}

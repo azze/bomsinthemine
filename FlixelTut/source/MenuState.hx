@@ -40,7 +40,7 @@ class MenuState extends FlxState
 		add(_sprJim);
 		_sprSid = new FlxSprite(200, 180 , AssetPaths.Sid_Thumb_v1__png);
 		add(_sprSid);
-		_sprTrevor = new FlxSprite(200, 180 , AssetPaths.Sid_Thumb_v1__png);
+		_sprTrevor = new FlxSprite(200, 260 , AssetPaths.Trevor_Thumb_v1__png);
 		add(_sprTrevor);
 		super.create();
 	}
@@ -54,6 +54,7 @@ class MenuState extends FlxState
 		super.destroy();
 		_btnJim = FlxDestroyUtil.destroy(_btnJim);
 		_btnSid = FlxDestroyUtil.destroy(_btnSid);
+		_btnTrevor = FlxDestroyUtil.destroy(_btnTrevor);
 	}
 	
 	private function clickJim():Void

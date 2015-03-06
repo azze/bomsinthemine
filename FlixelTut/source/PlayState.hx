@@ -30,6 +30,7 @@ class PlayState extends FlxState
 	public var _grpStones:FlxTypedGroup<Rock>;
 	private var _grpGold:FlxTypedGroup<Gold>;
 	public var _grpGems:FlxTypedGroup<Gem>;
+	public var _grpProjectile:FlxTypedGroup<Projectile>;
 	
 	public var _gridSize:Int = 16;
 	public var _grid:Array<Array<Bool>>;
@@ -50,11 +51,13 @@ class PlayState extends FlxState
 		_grpStones = new FlxTypedGroup<Rock>();
 		_grpGold = new FlxTypedGroup<Gold>();
 		_grpGems = new FlxTypedGroup<Gem>();
+		_grpProjectile = new FlxTypedGroup<Projectile>();
 	
 	
 		add(_grpStones);
 		add(_grpGold);
 		add(_grpGems);
+		add(_grpProjectile);
 		switch(playerClass){
 			case 0:
 				_player = new Jim(0, 0, this);
@@ -173,7 +176,7 @@ class PlayState extends FlxState
 		}
 		FlxG.overlap(_player, _grpGold, pickGold);
 		FlxG.overlap(_player, _grpGems, pickGem);
-		
+		FlxG.overlap(_grpProjectile, _grpStones, hitStone);
 		_hud.updateHUD(_health, _money, _weapons, _ready);
 	}
 	
@@ -189,6 +192,14 @@ class PlayState extends FlxState
 		
 		_health = (Math.round(_health - dam));
 	
+	}
+	
+	public function hitStone(P:Projectile, R:Rock)
+	{
+		R.damage(P.power);
+		if (!R.alive)
+			removeRock(R);
+		P.destroy();
 	}
 	
 	/**----- Uh how far away is this thing?-----*/
@@ -212,9 +223,11 @@ class PlayState extends FlxState
 		G.kill();
 	}
 	/**----- Take that you stupid Stone -----*/
-	public function attackStone(O:FlxObject, S:Stone)
+	public function attackStone(O:FlxObject, R:Rock)
 	{
-		S.damage(_player.damage);
+		R.damage(_player.damage);
+		if (!R.alive)
+			removeRock(R);
 	}
 	
 	public function checkGrid(i:Float = 0, j:Float = 0):Bool 

@@ -153,24 +153,7 @@ class Player extends FlxSprite
 			attacked = true;
 			attTimer = attSpeed;
 		}
-						switch(facing)
-				{
-					case FlxObject.LEFT:
-						animation.play("lra");
 						
-						
-					case FlxObject.RIGHT:
-						animation.play("lra");
-						
-						
-					case FlxObject.UP:
-						animation.play("ua");
-						
-						
-					case FlxObject.DOWN:
-						animation.play("da");
-						
-				}
 	}
 	
 	/**------ it like stuff that goes boom ------*/

@@ -54,6 +54,28 @@ class Sid extends Player
 				}
 			}
 	}
+	override public function attack():Void
+	{
+		switch(facing)
+				{
+					case FlxObject.LEFT:
+						animation.play("lra");
+						
+						
+					case FlxObject.RIGHT:
+						animation.play("lra");
+						
+						
+					case FlxObject.UP:
+						animation.play("ua");
+						
+						
+					case FlxObject.DOWN:
+						animation.play("da");
+						
+				}
+				super.attack();
+	}
 	
 	override public function update():Void
 	{

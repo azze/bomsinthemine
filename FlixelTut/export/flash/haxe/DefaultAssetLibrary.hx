@@ -50,6 +50,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/data/Game.oep", AssetType.TEXT);
 		className.set ("assets/data/minelvl002.oel", __ASSET__assets_data_minelvl002_oel);
 		type.set ("assets/data/minelvl002.oel", AssetType.TEXT);
+		className.set ("assets/data/minelvl003.oel", __ASSET__assets_data_minelvl003_oel);
+		type.set ("assets/data/minelvl003.oel", AssetType.TEXT);
 		className.set ("assets/data/room-001.oel", __ASSET__assets_data_room_001_oel);
 		type.set ("assets/data/room-001.oel", AssetType.TEXT);
 		className.set ("assets/images/BigBomb.png", __ASSET__assets_images_bigbomb_png);
@@ -60,6 +62,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/images/fireball.png", AssetType.IMAGE);
 		className.set ("assets/images/Game_Template_Miner_Sid.png", __ASSET__assets_images_game_template_miner_sid_png);
 		type.set ("assets/images/Game_Template_Miner_Sid.png", AssetType.IMAGE);
+		className.set ("assets/images/Game_Template_Miner_Trevor.png", __ASSET__assets_images_game_template_miner_trevor_png);
+		type.set ("assets/images/Game_Template_Miner_Trevor.png", AssetType.IMAGE);
 		className.set ("assets/images/Game_Template_Miner_v1.png", __ASSET__assets_images_game_template_miner_v1_png);
 		type.set ("assets/images/Game_Template_Miner_v1.png", AssetType.IMAGE);
 		className.set ("assets/images/Game_Template_Miner_v2.png", __ASSET__assets_images_game_template_miner_v2_png);
@@ -84,6 +88,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/images/Sid_Thumb_v1.png", AssetType.IMAGE);
 		className.set ("assets/images/stone.png", __ASSET__assets_images_stone_png);
 		type.set ("assets/images/stone.png", AssetType.IMAGE);
+		className.set ("assets/images/Trevor_Thumb_v1.png", __ASSET__assets_images_trevor_thumb_v1_png);
+		type.set ("assets/images/Trevor_Thumb_v1.png", AssetType.IMAGE);
 		className.set ("assets/music/music-goes-here.txt", __ASSET__assets_music_music_goes_here_txt);
 		type.set ("assets/music/music-goes-here.txt", AssetType.TEXT);
 		className.set ("assets/sounds/sounds-go-here.txt", __ASSET__assets_sounds_sounds_go_here_txt);
@@ -109,6 +115,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		
 		type.set (id, AssetType.TEXT);
+		id = "assets/data/minelvl003.oel";
+		path.set (id, id);
+		
+		type.set (id, AssetType.TEXT);
 		id = "assets/data/room-001.oel";
 		path.set (id, id);
 		
@@ -126,6 +136,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		type.set (id, AssetType.IMAGE);
 		id = "assets/images/Game_Template_Miner_Sid.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/Game_Template_Miner_Trevor.png";
 		path.set (id, id);
 		
 		type.set (id, AssetType.IMAGE);
@@ -177,6 +191,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		
 		type.set (id, AssetType.IMAGE);
+		id = "assets/images/Trevor_Thumb_v1.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
 		id = "assets/music/music-goes-here.txt";
 		path.set (id, id);
 		
@@ -224,6 +242,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
+		
+		
 		#end
 		
 		#if (windows || mac || linux)
@@ -239,6 +260,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		className.set ("assets/data/minelvl002.oel", __ASSET__assets_data_minelvl002_oel);
 		type.set ("assets/data/minelvl002.oel", AssetType.TEXT);
 		
+		className.set ("assets/data/minelvl003.oel", __ASSET__assets_data_minelvl003_oel);
+		type.set ("assets/data/minelvl003.oel", AssetType.TEXT);
+		
 		className.set ("assets/data/room-001.oel", __ASSET__assets_data_room_001_oel);
 		type.set ("assets/data/room-001.oel", AssetType.TEXT);
 		
@@ -253,6 +277,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("assets/images/Game_Template_Miner_Sid.png", __ASSET__assets_images_game_template_miner_sid_png);
 		type.set ("assets/images/Game_Template_Miner_Sid.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/Game_Template_Miner_Trevor.png", __ASSET__assets_images_game_template_miner_trevor_png);
+		type.set ("assets/images/Game_Template_Miner_Trevor.png", AssetType.IMAGE);
 		
 		className.set ("assets/images/Game_Template_Miner_v1.png", __ASSET__assets_images_game_template_miner_v1_png);
 		type.set ("assets/images/Game_Template_Miner_v1.png", AssetType.IMAGE);
@@ -289,6 +316,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("assets/images/stone.png", __ASSET__assets_images_stone_png);
 		type.set ("assets/images/stone.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/Trevor_Thumb_v1.png", __ASSET__assets_images_trevor_thumb_v1_png);
+		type.set ("assets/images/Trevor_Thumb_v1.png", AssetType.IMAGE);
 		
 		className.set ("assets/music/music-goes-here.txt", __ASSET__assets_music_music_goes_here_txt);
 		type.set ("assets/music/music-goes-here.txt", AssetType.TEXT);
@@ -876,11 +906,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep @:bind #if display private #end class __ASSET__assets_data_data_goes_here_txt extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_data_game_oep extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_data_minelvl002_oel extends flash.utils.ByteArray { }
+@:keep @:bind #if display private #end class __ASSET__assets_data_minelvl003_oel extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_data_room_001_oel extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_images_bigbomb_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_bomb_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_fireball_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_game_template_miner_sid_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_game_template_miner_trevor_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_game_template_miner_v1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_game_template_miner_v2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_game_template_tiles_v1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -893,6 +925,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep @:bind #if display private #end class __ASSET__assets_images_jim_thumb_v1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_sid_thumb_v1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_stone_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_trevor_thumb_v1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_music_music_goes_here_txt extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_sounds_sounds_go_here_txt extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_sounds_beep_mp3 extends flash.media.Sound { }
@@ -902,6 +935,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 #elseif html5
 
 #if openfl
+
+
+
 
 
 
@@ -941,11 +977,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 //@:file("assets/data/data-goes-here.txt") class __ASSET__assets_data_data_goes_here_txt extends lime.utils.ByteArray {}
 //@:file("assets/data/Game.oep") class __ASSET__assets_data_game_oep extends lime.utils.ByteArray {}
 //@:file("assets/data/minelvl002.oel") class __ASSET__assets_data_minelvl002_oel extends lime.utils.ByteArray {}
+//@:file("assets/data/minelvl003.oel") class __ASSET__assets_data_minelvl003_oel extends lime.utils.ByteArray {}
 //@:file("assets/data/room-001.oel") class __ASSET__assets_data_room_001_oel extends lime.utils.ByteArray {}
 //@:bitmap("assets/images/BigBomb.png") class __ASSET__assets_images_bigbomb_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/Bomb.png") class __ASSET__assets_images_bomb_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/fireball.png") class __ASSET__assets_images_fireball_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/Game_Template_Miner_Sid.png") class __ASSET__assets_images_game_template_miner_sid_png extends openfl.display.BitmapData {}
+//@:bitmap("assets/images/Game_Template_Miner_Trevor.png") class __ASSET__assets_images_game_template_miner_trevor_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/Game_Template_Miner_v1.png") class __ASSET__assets_images_game_template_miner_v1_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/Game_Template_Miner_v2.png") class __ASSET__assets_images_game_template_miner_v2_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/Game_Template_Tiles_v1.png") class __ASSET__assets_images_game_template_tiles_v1_png extends openfl.display.BitmapData {}
@@ -958,6 +996,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 //@:bitmap("assets/images/Jim_Thumb_v1.png") class __ASSET__assets_images_jim_thumb_v1_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/Sid_Thumb_v1.png") class __ASSET__assets_images_sid_thumb_v1_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/stone.png") class __ASSET__assets_images_stone_png extends openfl.display.BitmapData {}
+//@:bitmap("assets/images/Trevor_Thumb_v1.png") class __ASSET__assets_images_trevor_thumb_v1_png extends openfl.display.BitmapData {}
 //@:file("assets/music/music-goes-here.txt") class __ASSET__assets_music_music_goes_here_txt extends lime.utils.ByteArray {}
 //@:file("assets/sounds/sounds-go-here.txt") class __ASSET__assets_sounds_sounds_go_here_txt extends lime.utils.ByteArray {}
 //@:sound("C:/HaxeToolkit/haxe/lib/flixel/3,3,6/assets/sounds/beep.mp3") class __ASSET__assets_sounds_beep_mp3 extends openfl.media.Sound {}
