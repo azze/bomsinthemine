@@ -51,9 +51,11 @@ class PlayState extends FlxState
 		add(_grpGold);
 		switch(playerClass){
 			case 0:
-				_player = new Jim(0, 0, this, 0);
+				_player = new Jim(0, 0, this);
 			case 1:
-				_player = new Sid(0, 0, this, 1);
+				_player = new Sid(0, 0, this);
+			case 2:
+				_player = new Trevor(0, 0, this);
 		}
 		
 		_map.loadEntities(placeEntities, "entities");

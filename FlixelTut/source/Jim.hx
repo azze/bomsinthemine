@@ -8,13 +8,52 @@ import flixel.FlxObject;
  */
 class Jim extends Player
 {
+
 	public var barrierTimer:Float = 0;
 	public var barrierCD:Float = 4;
 	
-	public function new(X:Float=0, Y:Float=0, game:PlayState, mod:Int) 
+	public function new(X:Float=0, Y:Float=0, game:PlayState) 
 	{
-		super(X, Y, game, mod);
+		super(X, Y, game);
+		loadGraphic(AssetPaths.Game_Template_Miner_v2__png, false, 16, 16);
+		setFacingFlip(FlxObject.RIGHT, false, false);
+		setFacingFlip(FlxObject.LEFT, true, false);
+		animation.add("d", [3, 4, 3, 5], 6, false);
+		animation.add("u", [6, 7, 6, 8], 6, false);
+		animation.add("lr", [0, 1, 0, 2], 6, false);
 		
+		animation.add("da", [3, 11, 3, 12], 6, false);
+		animation.add("ua", [6, 13, 6, 14], 6, false);
+		animation.add("lra", [0, 9, 10, 9], 6, false);
+		drag.x = drag.y = 16000;
+		setSize(8, 14);
+		offset.set(4, 2);
+	}
+	
+	override function movement():Void
+	{
+		super.movement();
+		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE) 
+			{
+				switch(facing)
+				{
+					case FlxObject.LEFT:
+						animation.play("lr");
+						
+						
+					case FlxObject.RIGHT:
+						animation.play("lr");
+						
+						
+					case FlxObject.UP:
+						animation.play("u");
+						
+						
+					case FlxObject.DOWN:
+						animation.play("d");
+						
+				}
+			}
 	}
 	
 	public function barrier():Void
@@ -76,4 +115,5 @@ class Jim extends Player
 			barrierTimer -= FlxG.elapsed;
 		}
 	}
+	
 }

@@ -56,6 +56,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/images/BigBomb.png", AssetType.IMAGE);
 		className.set ("assets/images/Bomb.png", __ASSET__assets_images_bomb_png);
 		type.set ("assets/images/Bomb.png", AssetType.IMAGE);
+		className.set ("assets/images/fireball.png", __ASSET__assets_images_fireball_png);
+		type.set ("assets/images/fireball.png", AssetType.IMAGE);
 		className.set ("assets/images/Game_Template_Miner_Sid.png", __ASSET__assets_images_game_template_miner_sid_png);
 		type.set ("assets/images/Game_Template_Miner_Sid.png", AssetType.IMAGE);
 		className.set ("assets/images/Game_Template_Miner_v1.png", __ASSET__assets_images_game_template_miner_v1_png);
@@ -116,6 +118,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		type.set (id, AssetType.IMAGE);
 		id = "assets/images/Bomb.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/fireball.png";
 		path.set (id, id);
 		
 		type.set (id, AssetType.IMAGE);
@@ -217,6 +223,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		#end
 		
 		#if (windows || mac || linux)
@@ -240,6 +247,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("assets/images/Bomb.png", __ASSET__assets_images_bomb_png);
 		type.set ("assets/images/Bomb.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/fireball.png", __ASSET__assets_images_fireball_png);
+		type.set ("assets/images/fireball.png", AssetType.IMAGE);
 		
 		className.set ("assets/images/Game_Template_Miner_Sid.png", __ASSET__assets_images_game_template_miner_sid_png);
 		type.set ("assets/images/Game_Template_Miner_Sid.png", AssetType.IMAGE);
@@ -869,6 +879,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep @:bind #if display private #end class __ASSET__assets_data_room_001_oel extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_images_bigbomb_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_bomb_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_fireball_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_game_template_miner_sid_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_game_template_miner_v1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_game_template_miner_v2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -915,6 +926,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
 #end
 
 #else
@@ -932,6 +944,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 //@:file("assets/data/room-001.oel") class __ASSET__assets_data_room_001_oel extends lime.utils.ByteArray {}
 //@:bitmap("assets/images/BigBomb.png") class __ASSET__assets_images_bigbomb_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/Bomb.png") class __ASSET__assets_images_bomb_png extends openfl.display.BitmapData {}
+//@:bitmap("assets/images/fireball.png") class __ASSET__assets_images_fireball_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/Game_Template_Miner_Sid.png") class __ASSET__assets_images_game_template_miner_sid_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/Game_Template_Miner_v1.png") class __ASSET__assets_images_game_template_miner_v1_png extends openfl.display.BitmapData {}
 //@:bitmap("assets/images/Game_Template_Miner_v2.png") class __ASSET__assets_images_game_template_miner_v2_png extends openfl.display.BitmapData {}

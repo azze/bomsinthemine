@@ -51,6 +51,10 @@ class ApplicationMain {
 		types.push (AssetType.IMAGE);
 		
 		
+		urls.push ("assets/images/fireball.png");
+		types.push (AssetType.IMAGE);
+		
+		
 		urls.push ("assets/images/Game_Template_Miner_Sid.png");
 		types.push (AssetType.IMAGE);
 		

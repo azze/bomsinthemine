@@ -16,8 +16,10 @@ class MenuState extends FlxState
 {
 	private var _btnJim:FlxButton;
 	private var _btnSid:FlxButton;
+	private var _btnTrevor:FlxButton;
 	private var _sprJim:FlxSprite;
 	private var _sprSid:FlxSprite;
+	private var _sprTrevor:FlxSprite;
 	
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -32,10 +34,14 @@ class MenuState extends FlxState
 		add(_btnJim);
 		_btnSid = new FlxButton(64, 192, "Sid", clickSid);
 		add(_btnSid);
+		_btnTrevor = new FlxButton(64, 256, "Trevor", clickTrevor);
+		add(_btnTrevor);
 		_sprJim = new FlxSprite(200, 100 , AssetPaths.Jim_Thumb_v1__png);
 		add(_sprJim);
 		_sprSid = new FlxSprite(200, 180 , AssetPaths.Sid_Thumb_v1__png);
 		add(_sprSid);
+		_sprTrevor = new FlxSprite(200, 180 , AssetPaths.Sid_Thumb_v1__png);
+		add(_sprTrevor);
 		super.create();
 	}
 	
@@ -64,6 +70,12 @@ class MenuState extends FlxState
 		FlxG.switchState(state);
 	}
 	
+	private function clickTrevor():Void
+	{
+		var state:PlayState = new PlayState();
+		state.playerClass = 2;
+		FlxG.switchState(state);
+	}
 	/**
 	 * Function that is called once every frame.
 	 */
