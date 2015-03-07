@@ -103,7 +103,6 @@ class Sid extends Player
 		p = snapToGrid(p);
 		var x:Float = p.x;
 		var y:Float = p.y;
-		trace("before: (" +this.x + ", " +this.y +")");
 		switch(facing) {
 			case FlxObject.LEFT:
 				while (game.checkGrid(x - game._gridSize * a, y))
@@ -124,7 +123,6 @@ class Sid extends Player
 				this.y = this.y + game._gridSize*a;
 			default:
 		}
-		trace("after: (" +this.x + ", " +this.y +")");
 	}
 	
 }

@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxTypedGroup;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
@@ -13,6 +14,8 @@ import flixel.tile.FlxTilemap;
 import flixel.FlxObject;
 import flixel.util.FlxPoint;
 import sys.db.Types.SId;
+import sys.net.Host;
+import sys.net.Socket;
 import sys.net.UdpSocket;
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -36,6 +39,9 @@ class PlayState extends FlxState
 	public var _gridSize:Int = 16;
 	public var _grid:Array<Array<Bool>>;
 	public var gameType:Float = 0; 
+	public var client:Socket;
+	public var hasClient:Bool = false;
+	public var sndExplosion:FlxSound;
 	
 	/**----------------------------- Genesis -----------------------------*/
 	
@@ -43,9 +49,14 @@ class PlayState extends FlxState
 	
 	override public function create():Void
 	{
+		if (gameType == 1){
+			sock = new UdpSocket();
+			sock.bind(new Host("localhost"), 6767);
+			sock.listen(1);
+		}
+		sndExplosion = FlxG.sound.load(AssetPaths.Explosion__wav);
 		_map = new FlxOgmoLoader(AssetPaths.minelvl002__oel);
 		_mGround = _map.loadTilemap(AssetPaths.Game_Template_Tiles_v1__png, _gridSize, _gridSize, "ground");
-		
 		_mGround.setTileProperties(1, FlxObject.NONE);
 		_mGround.setTileProperties(2, FlxObject.ANY);
 		_grid = [for (i in 0...60) [for (j in 0...40) false]]; 
@@ -72,12 +83,11 @@ class PlayState extends FlxState
 		_map.loadEntities(placeEntities, "entities");
 		add(_player);
 		add(_player.bombs);
-		
 		_hud = new HUD();
 		add(_hud);
 		
 		super.create();
-		sock = new UdpSocket();
+		
 	}
 	/**---------------- fifth and sixth day ----------------*/
 	
@@ -93,24 +103,14 @@ class PlayState extends FlxState
 		}
 		
 		else if (entityName == "rocks")
-			{
+		{
 			addRock(new Stone(x, y));
-			}
-		else if (entityName == "gold")
-			{
-			addGold(new Gold(x, y));
-			}
-		var str:String = "";
-		for (i in 0...40) {
-			for (j in 0...60) {
-				if (_grid[j][i])
-					str = str + "1";
-				else
-					str = str +"0";
-			}
-			trace(str);
-			str = "";
 		}
+		else if (entityName == "gold")
+		{
+			addGold(new Gold(x, y));
+		}
+		
 	}
 	
 	/**---------------- Reality and all its things ----------------*/
@@ -161,6 +161,7 @@ class PlayState extends FlxState
 			var bob:Bomb = _player.bombs.members[i];
 			if (bob.exploded)
 			{
+				sndExplosion.play();
 				for (j in 0..._grpStones.length)
 				{	
 					if(_grpStones.members[j].alive){
@@ -191,6 +192,21 @@ class PlayState extends FlxState
 		FlxG.overlap(_player, _grpGems, pickGem);
 		FlxG.overlap(_grpProjectile, _grpStones, hitStone);
 		_hud.updateHUD(_health, _money, _weapons, _ready);
+		
+		if (gameType == 1) {
+			if (!hasClient){
+				//client = sock.accept();
+				//hasClient = true;
+			}
+			relayGameInfo();
+		}
+		
+	}
+	
+	public function relayGameInfo():Void 
+	{
+		if(hasClient)
+			client.write(Std.string(_player.x));
 	}
 	
 	/**-----------------------Funktions Funktionen :P ------------------------*/
@@ -247,7 +263,6 @@ class PlayState extends FlxState
 	{
 		var r:Int = Math.floor(i / 16);
 		var s:Int = Math.floor(j / 16);
-		trace("r: " + r + " s: " + s + " val: " + _grid[r][s]);
 		return _grid[r][s];
 	}
 	

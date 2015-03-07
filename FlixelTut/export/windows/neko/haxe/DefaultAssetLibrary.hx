@@ -98,6 +98,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/images/stone.png", AssetType.IMAGE);
 		path.set ("assets/images/Trevor_Thumb_v1.png", "assets/images/Trevor_Thumb_v1.png");
 		type.set ("assets/images/Trevor_Thumb_v1.png", AssetType.IMAGE);
+		path.set ("assets/music/Explosion.wav", "assets/music/Explosion.wav");
+		type.set ("assets/music/Explosion.wav", AssetType.SOUND);
 		path.set ("assets/music/music-goes-here.txt", "assets/music/music-goes-here.txt");
 		type.set ("assets/music/music-goes-here.txt", AssetType.TEXT);
 		path.set ("assets/sounds/sounds-go-here.txt", "assets/sounds/sounds-go-here.txt");
@@ -189,6 +191,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "assets/images/Trevor_Thumb_v1.png";
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
+		id = "assets/music/Explosion.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
 		id = "assets/music/music-goes-here.txt";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
@@ -238,9 +243,11 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -920,7 +927,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
 #elseif html5
+
 
 
 
