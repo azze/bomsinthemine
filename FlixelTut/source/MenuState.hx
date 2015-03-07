@@ -20,6 +20,7 @@ class MenuState extends FlxState
 	private var _sprJim:FlxSprite;
 	private var _sprSid:FlxSprite;
 	private var _sprTrevor:FlxSprite;
+	public var gameMode:Float=0;
 	
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -61,6 +62,7 @@ class MenuState extends FlxState
 	{
 		var state:PlayState = new PlayState();
 		state.playerClass = 0;
+		state.gameType = gameMode;
 		FlxG.switchState(state);
 	}
 	
@@ -68,6 +70,7 @@ class MenuState extends FlxState
 	{
 		var state:PlayState = new PlayState();
 		state.playerClass = 1;
+		state.gameType = gameMode;
 		FlxG.switchState(state);
 	}
 	
@@ -75,6 +78,7 @@ class MenuState extends FlxState
 	{
 		var state:PlayState = new PlayState();
 		state.playerClass = 2;
+		state.gameType = gameMode;
 		FlxG.switchState(state);
 	}
 	/**

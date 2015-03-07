@@ -89,31 +89,42 @@ class Sid extends Player
 		}
 		if (blinkTimer > 0) {
 			blinkTimer -= FlxG.elapsed;
+			if ((blinkTimer < blinkCD - 0.05) && !solid)
+				solid = true;
 		}
+			
 	}
 	
 	public function blink():Void
 	{
+		solid = false;
 		var a:Int = 8;
+		var p:FlxPoint = getMidpoint();
+		p = snapToGrid(p);
+		var x:Float = p.x;
+		var y:Float = p.y;
+		trace("before: (" +this.x + ", " +this.y +")");
 		switch(facing) {
 			case FlxObject.LEFT:
 				while (game.checkGrid(x - game._gridSize * a, y))
 					a = a - 1;
-				x = x - game._gridSize*a;
+				this.x = this.x - game._gridSize*a;
 			case FlxObject.UP:
 				while (game.checkGrid(x , y- game._gridSize * a))
 					a = a - 1;
-				y = y -game._gridSize*a;
+				this.y = this.y -game._gridSize*a;
 			case FlxObject.RIGHT:
 				while (game.checkGrid(x + game._gridSize * a, y))
 					a = a - 1;
-				x = x +game._gridSize * a;
+				this.x = this.x +game._gridSize * a;
+				
 			case FlxObject.DOWN:
 				while (game.checkGrid(x , y+ game._gridSize * a))
 					a = a - 1;
-				y = y + game._gridSize*a;
+				this.y = this.y + game._gridSize*a;
 			default:
 		}
+		trace("after: (" +this.x + ", " +this.y +")");
 	}
 	
 }

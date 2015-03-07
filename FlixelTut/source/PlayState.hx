@@ -13,6 +13,7 @@ import flixel.tile.FlxTilemap;
 import flixel.FlxObject;
 import flixel.util.FlxPoint;
 import sys.db.Types.SId;
+import sys.net.UdpSocket;
 /**
  * A FlxState which can be used for the actual gameplay.
  */
@@ -31,9 +32,10 @@ class PlayState extends FlxState
 	private var _grpGold:FlxTypedGroup<Gold>;
 	public var _grpGems:FlxTypedGroup<Gem>;
 	public var _grpProjectile:FlxTypedGroup<Projectile>;
-	
+	public var sock:UdpSocket;
 	public var _gridSize:Int = 16;
 	public var _grid:Array<Array<Bool>>;
+	public var gameType:Float = 0; 
 	
 	/**----------------------------- Genesis -----------------------------*/
 	
@@ -75,12 +77,13 @@ class PlayState extends FlxState
 		add(_hud);
 		
 		super.create();
-	
+		sock = new UdpSocket();
 	}
 	/**---------------- fifth and sixth day ----------------*/
 	
 	private function placeEntities(entityName:String, entityData:Xml):Void
 	{
+		
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		if (entityName == "player")
@@ -97,7 +100,17 @@ class PlayState extends FlxState
 			{
 			addGold(new Gold(x, y));
 			}
-		
+		var str:String = "";
+		for (i in 0...40) {
+			for (j in 0...60) {
+				if (_grid[j][i])
+					str = str + "1";
+				else
+					str = str +"0";
+			}
+			trace(str);
+			str = "";
+		}
 	}
 	
 	/**---------------- Reality and all its things ----------------*/
@@ -232,7 +245,10 @@ class PlayState extends FlxState
 	
 	public function checkGrid(i:Float = 0, j:Float = 0):Bool 
 	{
-		return _grid[Math.floor(i / 16)][Math.floor(j / 16)];
+		var r:Int = Math.floor(i / 16);
+		var s:Int = Math.floor(j / 16);
+		trace("r: " + r + " s: " + s + " val: " + _grid[r][s]);
+		return _grid[r][s];
 	}
 	
 	public function setGrid(i:Float = 0, j:Float = 0, bl:Bool=false):Void
