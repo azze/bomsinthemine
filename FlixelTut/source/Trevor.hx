@@ -20,7 +20,6 @@ class Trevor extends Player
 		animation.add("d", [3, 4, 3, 5], 6, false);
 		animation.add("u", [6, 7, 6, 8], 6, false);
 		animation.add("lr", [0, 1, 0, 2], 6, false);
-		
 		animation.add("da", [3, 11, 3, 12], 6, false);
 		animation.add("ua", [6, 13, 6, 14], 6, false);
 		animation.add("lra", [0, 9, 10, 9], 6, false);

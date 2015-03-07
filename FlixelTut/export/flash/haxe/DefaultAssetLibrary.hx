@@ -60,6 +60,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/images/Bomb.png", AssetType.IMAGE);
 		className.set ("assets/images/fireball.png", __ASSET__assets_images_fireball_png);
 		type.set ("assets/images/fireball.png", AssetType.IMAGE);
+		className.set ("assets/images/fireball2.png", __ASSET__assets_images_fireball2_png);
+		type.set ("assets/images/fireball2.png", AssetType.IMAGE);
+		className.set ("assets/images/fireballa.png", __ASSET__assets_images_fireballa_png);
+		type.set ("assets/images/fireballa.png", AssetType.IMAGE);
+		className.set ("assets/images/fireballfull.png", __ASSET__assets_images_fireballfull_png);
+		type.set ("assets/images/fireballfull.png", AssetType.IMAGE);
 		className.set ("assets/images/Game_Template_Miner_Sid.png", __ASSET__assets_images_game_template_miner_sid_png);
 		type.set ("assets/images/Game_Template_Miner_Sid.png", AssetType.IMAGE);
 		className.set ("assets/images/Game_Template_Miner_Trevor.png", __ASSET__assets_images_game_template_miner_trevor_png);
@@ -132,6 +138,18 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		type.set (id, AssetType.IMAGE);
 		id = "assets/images/fireball.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/fireball2.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/fireballa.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/fireballfull.png";
 		path.set (id, id);
 		
 		type.set (id, AssetType.IMAGE);
@@ -213,9 +231,19 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set (id, AssetType.MUSIC);
 		
 		
+		var assetsPrefix = ApplicationMain.config.assetsPrefix;
+		if (assetsPrefix != null) {
+			for (k in path.keys()) {
+				path.set(k, assetsPrefix + path[k]);
+			}
+		}
+		
 		#else
 		
 		#if openfl
+		
+		
+		
 		
 		
 		
@@ -249,7 +277,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#if (windows || mac || linux)
 		
-		/*var useManifest = false;
+		var useManifest = false;
 		
 		className.set ("assets/data/data-goes-here.txt", __ASSET__assets_data_data_goes_here_txt);
 		type.set ("assets/data/data-goes-here.txt", AssetType.TEXT);
@@ -274,6 +302,15 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("assets/images/fireball.png", __ASSET__assets_images_fireball_png);
 		type.set ("assets/images/fireball.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/fireball2.png", __ASSET__assets_images_fireball2_png);
+		type.set ("assets/images/fireball2.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/fireballa.png", __ASSET__assets_images_fireballa_png);
+		type.set ("assets/images/fireballa.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/fireballfull.png", __ASSET__assets_images_fireballfull_png);
+		type.set ("assets/images/fireballfull.png", AssetType.IMAGE);
 		
 		className.set ("assets/images/Game_Template_Miner_Sid.png", __ASSET__assets_images_game_template_miner_sid_png);
 		type.set ("assets/images/Game_Template_Miner_Sid.png", AssetType.IMAGE);
@@ -331,8 +368,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("assets/sounds/flixel.mp3", __ASSET__assets_sounds_flixel_mp3);
 		type.set ("assets/sounds/flixel.mp3", AssetType.MUSIC);
-		*/
-		var useManifest = true;
+		
 		
 		if (useManifest) {
 			
@@ -481,10 +517,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#else
 		
-		//return null;
-		//if (className.exists(id)) return cast (Type.createInstance (className.get (id), []), ByteArray);
-		//else 
-		return ByteArray.readFile (path.get (id));
+		if (className.exists(id)) return cast (Type.createInstance (className.get (id), []), ByteArray);
+		else return ByteArray.readFile (path.get (id));
 		
 		#end
 		
@@ -778,6 +812,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 			var bytes = ByteArray.readFile ("../res/manifest");
 			#elseif emscripten
 			var bytes = ByteArray.readFile ("assets/manifest");
+			#elseif (mac && java)
+			var bytes = ByteArray.readFile ("../Resources/manifest");
 			#else
 			var bytes = ByteArray.readFile ("manifest");
 			#end
@@ -911,6 +947,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep @:bind #if display private #end class __ASSET__assets_images_bigbomb_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_bomb_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_fireball_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_fireball2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_fireballa_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_fireballfull_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_game_template_miner_sid_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_game_template_miner_trevor_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_game_template_miner_v1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -963,6 +1002,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
+
+
 #end
 
 #else
@@ -973,36 +1015,39 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 #if (windows || mac || linux)
 
-//
-//@:file("assets/data/data-goes-here.txt") class __ASSET__assets_data_data_goes_here_txt extends lime.utils.ByteArray {}
-//@:file("assets/data/Game.oep") class __ASSET__assets_data_game_oep extends lime.utils.ByteArray {}
-//@:file("assets/data/minelvl002.oel") class __ASSET__assets_data_minelvl002_oel extends lime.utils.ByteArray {}
-//@:file("assets/data/minelvl003.oel") class __ASSET__assets_data_minelvl003_oel extends lime.utils.ByteArray {}
-//@:file("assets/data/room-001.oel") class __ASSET__assets_data_room_001_oel extends lime.utils.ByteArray {}
-//@:bitmap("assets/images/BigBomb.png") class __ASSET__assets_images_bigbomb_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/Bomb.png") class __ASSET__assets_images_bomb_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/fireball.png") class __ASSET__assets_images_fireball_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/Game_Template_Miner_Sid.png") class __ASSET__assets_images_game_template_miner_sid_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/Game_Template_Miner_Trevor.png") class __ASSET__assets_images_game_template_miner_trevor_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/Game_Template_Miner_v1.png") class __ASSET__assets_images_game_template_miner_v1_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/Game_Template_Miner_v2.png") class __ASSET__assets_images_game_template_miner_v2_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/Game_Template_Tiles_v1.png") class __ASSET__assets_images_game_template_tiles_v1_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/gem.png") class __ASSET__assets_images_gem_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/gold.png") class __ASSET__assets_images_gold_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/health.png") class __ASSET__assets_images_health_png extends openfl.display.BitmapData {}
-//@:file("assets/images/images-go-here.txt") class __ASSET__assets_images_images_go_here_txt extends lime.utils.ByteArray {}
-//@:bitmap("assets/images/iron.png") class __ASSET__assets_images_iron_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/iron2.png") class __ASSET__assets_images_iron2_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/Jim_Thumb_v1.png") class __ASSET__assets_images_jim_thumb_v1_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/Sid_Thumb_v1.png") class __ASSET__assets_images_sid_thumb_v1_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/stone.png") class __ASSET__assets_images_stone_png extends openfl.display.BitmapData {}
-//@:bitmap("assets/images/Trevor_Thumb_v1.png") class __ASSET__assets_images_trevor_thumb_v1_png extends openfl.display.BitmapData {}
-//@:file("assets/music/music-goes-here.txt") class __ASSET__assets_music_music_goes_here_txt extends lime.utils.ByteArray {}
-//@:file("assets/sounds/sounds-go-here.txt") class __ASSET__assets_sounds_sounds_go_here_txt extends lime.utils.ByteArray {}
-//@:sound("C:/HaxeToolkit/haxe/lib/flixel/3,3,6/assets/sounds/beep.mp3") class __ASSET__assets_sounds_beep_mp3 extends openfl.media.Sound {}
-//@:sound("C:/HaxeToolkit/haxe/lib/flixel/3,3,6/assets/sounds/flixel.mp3") class __ASSET__assets_sounds_flixel_mp3 extends openfl.media.Sound {}
-//
-//
+
+@:file("assets/data/data-goes-here.txt") class __ASSET__assets_data_data_goes_here_txt extends lime.utils.ByteArray {}
+@:file("assets/data/Game.oep") class __ASSET__assets_data_game_oep extends lime.utils.ByteArray {}
+@:file("assets/data/minelvl002.oel") class __ASSET__assets_data_minelvl002_oel extends lime.utils.ByteArray {}
+@:file("assets/data/minelvl003.oel") class __ASSET__assets_data_minelvl003_oel extends lime.utils.ByteArray {}
+@:file("assets/data/room-001.oel") class __ASSET__assets_data_room_001_oel extends lime.utils.ByteArray {}
+@:bitmap("assets/images/BigBomb.png") class __ASSET__assets_images_bigbomb_png extends lime.graphics.Image {}
+@:bitmap("assets/images/Bomb.png") class __ASSET__assets_images_bomb_png extends lime.graphics.Image {}
+@:bitmap("assets/images/fireball.png") class __ASSET__assets_images_fireball_png extends lime.graphics.Image {}
+@:bitmap("assets/images/fireball2.png") class __ASSET__assets_images_fireball2_png extends lime.graphics.Image {}
+@:bitmap("assets/images/fireballa.png") class __ASSET__assets_images_fireballa_png extends lime.graphics.Image {}
+@:bitmap("assets/images/fireballfull.png") class __ASSET__assets_images_fireballfull_png extends lime.graphics.Image {}
+@:bitmap("assets/images/Game_Template_Miner_Sid.png") class __ASSET__assets_images_game_template_miner_sid_png extends lime.graphics.Image {}
+@:bitmap("assets/images/Game_Template_Miner_Trevor.png") class __ASSET__assets_images_game_template_miner_trevor_png extends lime.graphics.Image {}
+@:bitmap("assets/images/Game_Template_Miner_v1.png") class __ASSET__assets_images_game_template_miner_v1_png extends lime.graphics.Image {}
+@:bitmap("assets/images/Game_Template_Miner_v2.png") class __ASSET__assets_images_game_template_miner_v2_png extends lime.graphics.Image {}
+@:bitmap("assets/images/Game_Template_Tiles_v1.png") class __ASSET__assets_images_game_template_tiles_v1_png extends lime.graphics.Image {}
+@:bitmap("assets/images/gem.png") class __ASSET__assets_images_gem_png extends lime.graphics.Image {}
+@:bitmap("assets/images/gold.png") class __ASSET__assets_images_gold_png extends lime.graphics.Image {}
+@:bitmap("assets/images/health.png") class __ASSET__assets_images_health_png extends lime.graphics.Image {}
+@:file("assets/images/images-go-here.txt") class __ASSET__assets_images_images_go_here_txt extends lime.utils.ByteArray {}
+@:bitmap("assets/images/iron.png") class __ASSET__assets_images_iron_png extends lime.graphics.Image {}
+@:bitmap("assets/images/iron2.png") class __ASSET__assets_images_iron2_png extends lime.graphics.Image {}
+@:bitmap("assets/images/Jim_Thumb_v1.png") class __ASSET__assets_images_jim_thumb_v1_png extends lime.graphics.Image {}
+@:bitmap("assets/images/Sid_Thumb_v1.png") class __ASSET__assets_images_sid_thumb_v1_png extends lime.graphics.Image {}
+@:bitmap("assets/images/stone.png") class __ASSET__assets_images_stone_png extends lime.graphics.Image {}
+@:bitmap("assets/images/Trevor_Thumb_v1.png") class __ASSET__assets_images_trevor_thumb_v1_png extends lime.graphics.Image {}
+@:file("assets/music/music-goes-here.txt") class __ASSET__assets_music_music_goes_here_txt extends lime.utils.ByteArray {}
+@:file("assets/sounds/sounds-go-here.txt") class __ASSET__assets_sounds_sounds_go_here_txt extends lime.utils.ByteArray {}
+@:sound("C:/HaxeToolkit/haxe/lib/flixel/3,3,6/assets/sounds/beep.mp3") class __ASSET__assets_sounds_beep_mp3 extends lime.audio.AudioSource {}
+@:sound("C:/HaxeToolkit/haxe/lib/flixel/3,3,6/assets/sounds/flixel.mp3") class __ASSET__assets_sounds_flixel_mp3 extends lime.audio.AudioSource {}
+
+
 
 #end
 
