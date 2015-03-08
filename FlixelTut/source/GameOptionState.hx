@@ -44,8 +44,8 @@ class GameOptionState extends FlxState
 	
 	private function clickClient():Void
 	{
-		var state:MenuState = new MenuState();
-		state.gameMode = 0;
+		var state:ClientState = new ClientState();
+		//state.gameMode = 0;
 		FlxG.switchState(state);
 	}
 	

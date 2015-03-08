@@ -13,6 +13,7 @@ import flixel.addons.editors.ogmo.FlxOgmoLoader;
 import flixel.tile.FlxTilemap;
 import flixel.FlxObject;
 import flixel.util.FlxPoint;
+import neko.vm.Thread;
 import sys.db.Types.SId;
 import sys.net.Host;
 import sys.net.Socket;
@@ -35,12 +36,12 @@ class PlayState extends FlxState
 	private var _grpGold:FlxTypedGroup<Gold>;
 	public var _grpGems:FlxTypedGroup<Gem>;
 	public var _grpProjectile:FlxTypedGroup<Projectile>;
-	public var sock:UdpSocket;
+	public var server:Server;
+	public var serverThread:Thread;
 	public var _gridSize:Int = 16;
 	public var _grid:Array<Array<Bool>>;
 	public var gameType:Float = 0; 
-	public var client:Socket;
-	public var hasClient:Bool = false;
+	
 	public var sndExplosion:FlxSound;
 	
 	/**----------------------------- Genesis -----------------------------*/
@@ -50,9 +51,8 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		if (gameType == 1){
-			sock = new UdpSocket();
-			sock.bind(new Host("localhost"), 6767);
-			sock.listen(1);
+			server = new Server();
+			serverThread = Thread.create(relayGameInfo);
 		}
 		sndExplosion = FlxG.sound.load(AssetPaths.Explosion__wav);
 		_map = new FlxOgmoLoader(AssetPaths.minelvl002__oel);
@@ -194,19 +194,20 @@ class PlayState extends FlxState
 		_hud.updateHUD(_health, _money, _weapons, _ready);
 		
 		if (gameType == 1) {
-			if (!hasClient){
-				//client = sock.accept();
-				//hasClient = true;
-			}
-			relayGameInfo();
+			
+			serverThread.sendMessage("hi");
 		}
 		
 	}
 	
 	public function relayGameInfo():Void 
 	{
-		if(hasClient)
-			client.write(Std.string(_player.x));
+		while (true)
+		{
+			Thread.readMessage(true);
+			server.write(Std.string(_player.x));
+	
+		}
 	}
 	
 	/**-----------------------Funktions Funktionen :P ------------------------*/
@@ -242,14 +243,13 @@ class PlayState extends FlxState
 	
 		public function pickGem(O:Player, C:Gem)
 	{
-		C.kill();
+		removeGem(C);
 	}
 	
 	public function pickGold(O:Player, G:Gold)
 	{
 		_money++;
-
-		G.kill();
+		removeGold(G);
 	}
 	/**----- Take that you stupid Stone -----*/
 	public function attackStone(O:FlxObject, R:Rock)
@@ -281,7 +281,18 @@ class PlayState extends FlxState
 		R.destroy();
 		R.kill();
 	}
-	
+	public function removeGold(G:Gold)
+	{
+		setGrid(G.x, G.y, false);
+		G.destroy();
+		G.kill();
+	}
+	public function removeGem(G:Gem)
+	{
+		setGrid(G.x, G.y, false);
+		G.destroy();
+		G.kill();
+	}
 	public function addRock(R:Rock) {
 		if (!checkGrid(R.x, R.y)) {
 			setGrid(R.x, R.y, true);

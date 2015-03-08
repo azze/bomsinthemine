@@ -3,6 +3,7 @@ package ;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.group.FlxTypedGroup;
 import flixel.util.FlxAngle;
@@ -44,13 +45,8 @@ class Player extends FlxSprite
 	{
 		super(X, Y);
 		game = gam;
-		
-			
-		
-	
-		
-				
 	}
+	
 	
 	
 	
