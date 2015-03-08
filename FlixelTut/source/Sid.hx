@@ -2,18 +2,20 @@ package ;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.util.FlxPoint;
+import flixel.system.FlxSound;
 /**
  * ...
  * @author ...
  */
 class Sid extends Player
 {
-	
+	public var blinkSnd:FlxSound;
 	public var blinkTimer:Float = 0;
 	public var blinkCD:Float = 3;
 	public function new(X:Float=0, Y:Float=0, gam:PlayState) 
 	{
 		super(X, Y, gam);
+		blinkSnd = FlxG.sound.load(AssetPaths.Jump3__wav);
 		loadGraphic(AssetPaths.Game_Template_Miner_Sid__png, false, 16, 16);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		setFacingFlip(FlxObject.LEFT, true, false);
@@ -103,6 +105,7 @@ class Sid extends Player
 		p = snapToGrid(p);
 		var x:Float = p.x;
 		var y:Float = p.y;
+		blinkSnd.play();
 		switch(facing) {
 			case FlxObject.LEFT:
 				while (game.checkGrid(x - game._gridSize * a, y))

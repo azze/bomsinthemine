@@ -43,6 +43,8 @@ class PlayState extends FlxState
 	public var gameType:Float = 0; 
 	
 	public var sndExplosion:FlxSound;
+	public var sndCoin:FlxSound;
+	public var sndHit:FlxSound;
 	
 	/**----------------------------- Genesis -----------------------------*/
 	
@@ -53,8 +55,11 @@ class PlayState extends FlxState
 		if (gameType == 1){
 			server = new Server();
 			serverThread = Thread.create(relayGameInfo);
+			
 		}
 		sndExplosion = FlxG.sound.load(AssetPaths.Explosion__wav);
+		sndCoin = FlxG.sound.load(AssetPaths.Pickup_Coin__wav);
+		sndHit = FlxG.sound.load(AssetPaths.Hit_Hurt2__wav);
 		_map = new FlxOgmoLoader(AssetPaths.minelvl002__oel);
 		_mGround = _map.loadTilemap(AssetPaths.Game_Template_Tiles_v1__png, _gridSize, _gridSize, "ground");
 		_mGround.setTileProperties(1, FlxObject.NONE);
@@ -147,6 +152,7 @@ class PlayState extends FlxState
 			}
 			FlxG.overlap(obj, _grpStones, attackStone);
 			obj.kill();
+			
 			_player.attacked = false;
 			
 		}
@@ -249,11 +255,13 @@ class PlayState extends FlxState
 	public function pickGold(O:Player, G:Gold)
 	{
 		_money++;
+		sndCoin.play();
 		removeGold(G);
 	}
 	/**----- Take that you stupid Stone -----*/
 	public function attackStone(O:FlxObject, R:Rock)
 	{
+		sndHit.play();
 		R.damage(_player.damage);
 		if (!R.alive)
 			removeRock(R);

@@ -3,6 +3,7 @@ import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.util.FlxPoint;
 import flixel.util.FlxAngle;
+import flixel.system.FlxSound;
 /**
  * ...
  * @author ...
@@ -11,9 +12,11 @@ class Trevor extends Player
 {
 	public var ballTimer:Float = 0;
 	public var ballCD:Float = 7;
+	public var ballSnd:FlxSound;
 	public function new(X:Float=0, Y:Float=0, gam:PlayState) 
 	{
 		super(X, Y, gam);
+		ballSnd=FlxG.sound.load(AssetPaths.Laser_Shoot14__wav);
 		loadGraphic(AssetPaths.Game_Template_Miner_Trevor__png, false, 16, 16);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		setFacingFlip(FlxObject.LEFT, true, false);
@@ -119,6 +122,7 @@ class Trevor extends Player
 		}
 		var fball:Fireball = new Fireball(locPoint.x, locPoint.y);
 		game._grpProjectile.add(fball);
+		ballSnd.play();
 		FlxAngle.rotatePoint(fball.speed, 0, 0, 0, ang, fball.velocity); 
 	}
 	

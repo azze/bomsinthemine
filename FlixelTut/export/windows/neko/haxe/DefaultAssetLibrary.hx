@@ -98,12 +98,22 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/images/stone.png", AssetType.IMAGE);
 		path.set ("assets/images/Trevor_Thumb_v1.png", "assets/images/Trevor_Thumb_v1.png");
 		type.set ("assets/images/Trevor_Thumb_v1.png", AssetType.IMAGE);
-		path.set ("assets/music/Explosion.wav", "assets/music/Explosion.wav");
-		type.set ("assets/music/Explosion.wav", AssetType.SOUND);
 		path.set ("assets/music/music-goes-here.txt", "assets/music/music-goes-here.txt");
 		type.set ("assets/music/music-goes-here.txt", AssetType.TEXT);
+		path.set ("assets/sounds/Explosion.wav", "assets/sounds/Explosion.wav");
+		type.set ("assets/sounds/Explosion.wav", AssetType.SOUND);
+		path.set ("assets/sounds/Hit_Hurt2.wav", "assets/sounds/Hit_Hurt2.wav");
+		type.set ("assets/sounds/Hit_Hurt2.wav", AssetType.SOUND);
+		path.set ("assets/sounds/Jump3.wav", "assets/sounds/Jump3.wav");
+		type.set ("assets/sounds/Jump3.wav", AssetType.SOUND);
+		path.set ("assets/sounds/Laser_Shoot14.wav", "assets/sounds/Laser_Shoot14.wav");
+		type.set ("assets/sounds/Laser_Shoot14.wav", AssetType.SOUND);
+		path.set ("assets/sounds/Pickup_Coin.wav", "assets/sounds/Pickup_Coin.wav");
+		type.set ("assets/sounds/Pickup_Coin.wav", AssetType.SOUND);
 		path.set ("assets/sounds/sounds-go-here.txt", "assets/sounds/sounds-go-here.txt");
 		type.set ("assets/sounds/sounds-go-here.txt", AssetType.TEXT);
+		path.set ("assets/sounds/walk.wav", "assets/sounds/walk.wav");
+		type.set ("assets/sounds/walk.wav", AssetType.SOUND);
 		path.set ("assets/sounds/beep.ogg", "assets/sounds/beep.ogg");
 		type.set ("assets/sounds/beep.ogg", AssetType.SOUND);
 		path.set ("assets/sounds/flixel.ogg", "assets/sounds/flixel.ogg");
@@ -191,15 +201,30 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "assets/images/Trevor_Thumb_v1.png";
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
-		id = "assets/music/Explosion.wav";
-		path.set (id, id);
-		type.set (id, AssetType.SOUND);
 		id = "assets/music/music-goes-here.txt";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
+		id = "assets/sounds/Explosion.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
+		id = "assets/sounds/Hit_Hurt2.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
+		id = "assets/sounds/Jump3.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
+		id = "assets/sounds/Laser_Shoot14.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
+		id = "assets/sounds/Pickup_Coin.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
 		id = "assets/sounds/sounds-go-here.txt";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
+		id = "assets/sounds/walk.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
 		id = "assets/sounds/beep.ogg";
 		path.set (id, id);
 		type.set (id, AssetType.SOUND);
@@ -244,9 +269,19 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
+		
+		
+		
+		
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -928,7 +963,17 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
+
+
+
+
 #elseif html5
+
+
+
+
+
 
 
 

@@ -9,7 +9,7 @@ import flixel.group.FlxTypedGroup;
 import flixel.util.FlxAngle;
 import flixel.util.FlxColor;
 import flixel.util.FlxPoint;
-
+import flixel.system.FlxSound;
 
 
 
@@ -35,7 +35,7 @@ class Player extends FlxSprite
 	public var weapon:Int = 1;
 	
 	public var game:PlayState;
-
+	public var sndMove:FlxSound;
 	
 	
 	
@@ -44,6 +44,7 @@ class Player extends FlxSprite
 	public function new(X:Float=0, Y:Float=0, gam:PlayState)  
 	{
 		super(X, Y);
+		sndMove = FlxG.sound.load(AssetPaths.walk__wav);
 		game = gam;
 	}
 	
@@ -135,7 +136,7 @@ class Player extends FlxSprite
 				facing = FlxObject.RIGHT; 
 			}
 			FlxAngle.rotatePoint(speed, 0, 0, 0, mA, velocity); 
-			
+			sndMove.play();
 		}
 	}
 	
