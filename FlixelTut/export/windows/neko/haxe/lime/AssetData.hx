@@ -70,6 +70,8 @@ class AssetData {
 			type.set ("assets/images/Trevor_Thumb_v1.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/music/music-goes-here.txt", "assets/music/music-goes-here.txt");
 			type.set ("assets/music/music-goes-here.txt", Reflect.field (AssetType, "text".toUpperCase ()));
+			path.set ("assets/sounds/drop.wav", "assets/sounds/drop.wav");
+			type.set ("assets/sounds/drop.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
 			path.set ("assets/sounds/Explosion.wav", "assets/sounds/Explosion.wav");
 			type.set ("assets/sounds/Explosion.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
 			path.set ("assets/sounds/Hit_Hurt2.wav", "assets/sounds/Hit_Hurt2.wav");

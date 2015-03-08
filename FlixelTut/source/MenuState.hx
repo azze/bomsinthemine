@@ -22,6 +22,7 @@ class MenuState extends FlxState
 	private var _sprTrevor:FlxSprite;
 	public var gameMode:Float=0;
 	
+	
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */

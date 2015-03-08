@@ -82,7 +82,7 @@ class Sid extends Player
 	override public function update():Void
 	{
 		super.update();
-		if (FlxG.keys.pressed.SPACE)
+		if (_space)
 		{
 			if(blinkTimer<=0){
 				blink();

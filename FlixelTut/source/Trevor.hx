@@ -80,7 +80,7 @@ class Trevor extends Player
 	override public function update():Void 
 	{
 		super.update();
-		if (FlxG.keys.pressed.SPACE)
+		if (_space)
 		{
 			if(ballTimer<=0){
 				ball();

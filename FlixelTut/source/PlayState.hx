@@ -199,6 +199,9 @@ class PlayState extends FlxState
 		FlxG.overlap(_player, _grpGems, pickGem);
 		FlxG.overlap(_grpProjectile, _grpStones, hitStone);
 		_hud.updateHUD(_health, _money, _weapons, _ready);
+		handleInput();
+		
+		
 		
 		if (gameType == 1) {
 			
@@ -220,7 +223,17 @@ class PlayState extends FlxState
 	
 		}
 	}
-	
+	public function handleInput():Void
+	{
+		_player._up = FlxG.keys.anyPressed(["UP", "W"]);
+		_player._down = FlxG.keys.anyPressed(["DOWN", "S"]);
+		_player._left = FlxG.keys.anyPressed(["LEFT", "A"]);
+		_player._right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+		_player._C = FlxG.keys.pressed.C;
+		_player._X = FlxG.keys.justPressed.X;
+		_player._V = FlxG.keys.pressed.V;
+		_player._space = FlxG.keys.pressed.SPACE;
+	}
 	/**-----------------------Funktions Funktionen :P ------------------------*/
 	
 	public function ready(time:Int):Void

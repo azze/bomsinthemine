@@ -36,7 +36,15 @@ class Player extends FlxSprite
 	
 	public var game:PlayState;
 	public var sndMove:FlxSound;
-	
+	public var sndDrop:FlxSound;
+	public var _up:Bool = false;
+	public var _down:Bool = false;
+	public var _left:Bool = false;
+	public var _right:Bool = false;
+	public var _X:Bool = false;
+	public var _C:Bool = false;
+	public var _V:Bool = false;
+	public var _space:Bool = false;
 	
 	
 	
@@ -45,6 +53,7 @@ class Player extends FlxSprite
 	{
 		super(X, Y);
 		sndMove = FlxG.sound.load(AssetPaths.walk__wav);
+		sndDrop = FlxG.sound.load(AssetPaths.drop__wav);
 		game = gam;
 	}
 	
@@ -59,7 +68,7 @@ class Player extends FlxSprite
 		movement();
 		super.update();
 		
-		if (FlxG.keys.pressed.C)
+		if (_C)
 		{
 			attack();
 		}
@@ -67,11 +76,11 @@ class Player extends FlxSprite
 		if (attTimer > 0) {
 			attTimer = attTimer -FlxG.elapsed;
 		}
-		if (FlxG.keys.pressed.V)
+		if (_V)
 		{
 			setBomb();
 		}
-		if (FlxG.keys.anyJustPressed(["X"]))
+		if (_X)
 		{
 			changeWeapons();
 		}
@@ -89,14 +98,8 @@ class Player extends FlxSprite
 	
 	private function movement():Void
 	{
-		var _up:Bool = false;
-		var _down:Bool = false;
-		var _left:Bool = false;
-		var _right:Bool = false;
-		_up = FlxG.keys.anyPressed(["UP", "W"]);
-		_down = FlxG.keys.anyPressed(["DOWN", "S"]);
-		_left = FlxG.keys.anyPressed(["LEFT", "A"]);
-		_right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+		
+		
 		
 		if (_up || _down || _left || _right) {
 			
@@ -163,7 +166,7 @@ class Player extends FlxSprite
 			
 			var point:FlxPoint = new FlxPoint(getMidpoint().x, getMidpoint().y);
 			point = snapToGrid(point);
-			
+			sndDrop.play();
 			
 			switch(weapon)
 				{

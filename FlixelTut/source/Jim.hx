@@ -125,7 +125,7 @@ class Jim extends Player
 	override public function update():Void
 	{
 		super.update();
-		if (FlxG.keys.pressed.SPACE)
+		if (_space)
 		{
 			if(barrierTimer<=0){
 				barrier();
