@@ -38,6 +38,7 @@ class PlayState extends FlxState
 	public var _grpProjectile:FlxTypedGroup<Projectile>;
 	public var server:Server;
 	public var serverThread:Thread;
+	public var runServer:Thread;
 	public var _gridSize:Int = 16;
 	public var _grid:Array<Array<Bool>>;
 	public var gameType:Float = 0; 
@@ -55,7 +56,7 @@ class PlayState extends FlxState
 		if (gameType == 1){
 			server = new Server();
 			serverThread = Thread.create(relayGameInfo);
-			
+			runServer = Thread.create(runIt);
 		}
 		sndExplosion = FlxG.sound.load(AssetPaths.Explosion__wav);
 		sndCoin = FlxG.sound.load(AssetPaths.Pickup_Coin__wav);
@@ -205,13 +206,17 @@ class PlayState extends FlxState
 		}
 		
 	}
-	
+	public function runIt():Void 
+	{
+		server.run("localhost", 5000);
+		
+	}
 	public function relayGameInfo():Void 
 	{
 		while (true)
 		{
 			Thread.readMessage(true);
-			server.write(Std.string(_player.x));
+			server.inform(Std.string(_player.x));
 	
 		}
 	}

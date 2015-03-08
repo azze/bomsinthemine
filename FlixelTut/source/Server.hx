@@ -1,8 +1,9 @@
 package ;
+import haxe.io.Bytes;
 import haxe.remoting.AsyncProxy;
 import haxe.remoting.Context;
-import haxe.remoting.SocketConnection;
-import neko.net.ThreadRemotingServer;
+import haxe.remoting.SyncSocketConnection;
+import neko.net.ThreadServer;
 import sys.net.Host;
 import sys.net.Socket;
 import neko.vm.Thread;
@@ -11,72 +12,77 @@ import neko.vm.Thread;
  * ...
  * @author ...
  */
-class ClientApiImpl extends AsyncProxy<ClientApi>
-{
-}
 
-class ClientData implements ServerApi
+
+class ClientData 
 {
-	public var api:ClientApiImpl;
-	public var name:String;
-	public function  new (scnx:SocketConnection)
+	public var sock:Socket;
+	public var id:Int;
+	public function  new (sock:Socket, id:Int)
 	{
-		api = new ClientApiImpl(scnx.client	);
-		(cast scnx).__private = this;
+		this.sock = sock;
+		this.id = id;
 	}
-	public function identify(name:String)
-	{
-		this.name = name;
-		trace("this is important");
-		Server.clients.add(this);
-	}
-	public function write(str:String)
-	{
-		
-	}
-	public function disconnect()
-	{
-		Server.clients.remove(this);
-	}
-	public static function ofConnection(scnx:SocketConnection):ClientData
-	{
-		return (cast scnx).__private;
+	
+}
+class Message
+{
+	public var content:String;
+	public var author:Int;
+	public function new(cont:String, id:Int) {
+		content = cont;
+		author = id;
 	}
 }
  
-class Server
+class Server extends ThreadServer<ClientData, Message>
 {
 	public static var clients:List<ClientData> = new List<ClientData>();		
-	public var s:ThreadRemotingServer;
-	public function new() 
-	{
-		s = new ThreadRemotingServer(["localhost"]);
-		s.initClientApi = initClientApi;
-		s.clientDisconnected = onClientDisconnected;
-		var tread:Thread = Thread.create(run);
-	}
+	public var theNumber:Int = 0;
 	
-	public function run() 
+	
+	override function clientConnected(sock:Socket):ClientData
 	{
-		trace("starting server");
-		s.run("localhost", 5000);
+		var c:ClientData = new ClientData(sock, theNumber);
+		theNumber = theNumber + 1;
+		clients.add(c);
+		return c;
 	}
-	public function write(str:String)
+	override function clientDisconnected(c:ClientData)
 	{
-		
-		for ( c in clients)
+		clients.remove(c);
+	}
+	override function readClientMessage(c:ClientData, buf:Bytes, pos:Int, len:Int)
+	{
+		var complete = false;
+		var cpos = pos;
+		while (cpos < (pos+len) && !complete)
 		{
-			trace(str);
-			c.api.inform(str);
+			//check for a period/full stop (i.e.:  "." ) to signify a complete message 
+			complete = (buf.get(cpos) == 46);
+			cpos++;
 		}
+
+		// no full message
+		if( !complete ) return null;
+
+		// got a full message, return it
+		var msg:String = buf.getString(pos, cpos - pos);
+		var meg:Message =new Message(msg, c.id);
+		return {msg: meg  , bytes: cpos - pos };
 	}
-	static function initClientApi(scnx:SocketConnection, context:Context)
+	override function clientMessage( c : ClientData, msg : Message )
 	{
-		var c = new ClientData(scnx);
-		context.addObject("api",c);
+		trace(msg.content);
 	}
-	static function onClientDisconnected(scnx:SocketConnection) {
-		ClientData.ofConnection(scnx).disconnect();
+	public function inform(str:String)
+	{
+		str = str + "\n";
+		for (c in clients) {
+			sendData(c.sock, str);
+		}
+		
 	}
 	
+	 
 }
