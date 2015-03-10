@@ -14,6 +14,7 @@ class Iron extends Rock
 		this.density = 1000;
 		this.maxDensity = 1000;
 		this.dropChance = 0;
+		type = 2;
 	}
 	
 	override public function update():Void 

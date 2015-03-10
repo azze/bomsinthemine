@@ -46,6 +46,7 @@ class Player extends FlxSprite
 	public var _V:Bool = false;
 	public var _space:Bool = false;
 	public var id = 0;
+	public var type = 0;
 	
 	
 	

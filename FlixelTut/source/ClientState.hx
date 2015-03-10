@@ -12,33 +12,19 @@ import neko.Lib;
  * ...
  * @author ...
  */
-class ClientState extends FlxState
+class ClientState extends PlayState
 {
-	var _player:FlxSprite;
+	
 	var client:Client;
 	var clientThread:Thread;
-	public var orders:List<String>;
-	public var _grpStones:FlxTypedGroup<Rock>;
-	private var _grpGold:FlxTypedGroup<Gold>;
-	public var _grpGems:FlxTypedGroup<Gem>;
-	public var _grpProjectile:FlxTypedGroup<Projectile>;
+	var orders:List<String>;
 	override public function create():Void
 	{
-		_player = new FlxSprite(100, 100);
-		_player.loadGraphic(AssetPaths.fireball__png, 16, 16);
-		add(_player);
-		_grpStones = new FlxTypedGroup<Rock>();
-		_grpGold = new FlxTypedGroup<Gold>();
-		_grpGems = new FlxTypedGroup<Gem>();
-		_grpProjectile = new FlxTypedGroup<Projectile>();
-		add(_grpStones);
-		add(_grpGold);
-		add(_grpGems);
-		add(_grpProjectile);
+		super.create();
 		client = new Client();
 		clientThread = Thread.create(getInfo);
 		orders = new List<String>();
-		super.create();
+		
 		
 	}
 	
@@ -47,7 +33,7 @@ class ClientState extends FlxState
 		while (true)
 		{
 			var str:String = client.read();
-			if(str.length>5)
+			if(str.length>1)
 				orders.add(str);
 		}
 	}
@@ -74,57 +60,57 @@ class ClientState extends FlxState
 					switch(group) {
 						//Rock
 						case "x1":
-							addRock(id, value);
+							addCRock(id, value);
 						//Player
 						case "x2":
-							addPlayer(id, value);
+							addCPlayer(id, value);
 						//Bomb
 						case "x3":
-							addBomb(id, value);
+							addCBomb(id, value);
 						//Coin
 						case "x4":
-							addCoin(id, value);
+							addCCoin(id, value);
 						//Gem
 						case "x5":
-							addGem(id, value);
+							addCGem(id, value);
 					}
 				//delete entity
 				case "2":
 					switch(group) {
 						//Rock
 						case "x1":
-							deleteRock(id);
+							deleteCRock(id);
 						//Player
 						case "x2":
-							deletePlayer(id);
+							deleteCPlayer(id);
 						//Bomb
 						case "x3":
-							deleteBomb(id);
+							deleteCBomb(id);
 						//Coin
 						case "x4":
-							deleteCoin(id);
+							deleteCCoin(id);
 						//Gem
 						case "x5":
-							deleteGem(id);
+							deleteCGem(id);
 					}
 				case "3":
 					//modify entity
 					switch(group) {
 						//Rock
 						case "x1":
-							modRock(id, value);
+							modCRock(id, value);
 						//Player
 						case "x2":
-							modPlayer(id, value);
+							modCPlayer(id, value);
 						//Bomb
 						case "x3":
-							modBomb(id, value);
+							modCBomb(id, value);
 						//Coin
 						case "x4":
-							modCoin(id, value);
+							modCCoin(id, value);
 						//Gem
 						case "x5":
-							modGem(id, value);
+							modCGem(id, value);
 					}
 					
 			}
@@ -132,66 +118,109 @@ class ClientState extends FlxState
 		}
 		super.update();
 	}
-	public function	addRock(id:String, value:String)
+	public function	addCRock(id:String, value:String)
 	{
 		switch(id.charAt(0)){
 			case '1':
-				_grpStones.add(new Stone(Std.parseFloat(value.substr(0,4)),Std.parseFloat(value.substr(5,4))));
+				var stn:Stone = new Stone(Std.parseFloat(value.substr(0, 4)), Std.parseFloat(value.substr(5, 4)));
+				stn.id = Std.parseInt(id.substr(1, 3));
+				_grpStones.add(stn);
 		}
 	}
-	public function addPlayer(id, value)
+	public function addCPlayer(id, value)
+	{
+		switch(id.charAt(0)){
+			case '1':
+				var ply:Player = new Jim(Std.parseFloat(value.substr(0, 4)), Std.parseFloat(value.substr(5, 4)),this );
+				ply.id=Std.parseInt(id.substr(1, 3));
+				_grpPlayer.add(ply);
+			case '2':
+				var ply:Player = new Sid(Std.parseFloat(value.substr(0, 4)), Std.parseFloat(value.substr(5, 4)), this);
+				ply.id=Std.parseInt(id.substr(1, 3));
+				_grpPlayer.add(ply);
+			case '3':
+				var ply:Player = new Trevor(Std.parseFloat(value.substr(0, 4)), Std.parseFloat(value.substr(5, 4)), this);
+				ply.id=Std.parseInt(id.substr(1, 3));
+				_grpPlayer.add(ply);
+			
+		}
+	}
+	public function addCBomb(id, value)
 	{
 		
 	}
-	public function addBomb(id, value)
+	public function addCCoin(id, value)
+	{
+		switch(id.charAt(0)){
+			case '0':
+				var gld:Gold = new Gold(Std.parseFloat(value.substr(0, 4)), Std.parseFloat(value.substr(5, 4)));
+				gld.id=Std.parseInt(id.substr(1, 3));
+				_grpGold.add(gld);
+		}
+	}
+	public function addCGem(id:String, value:String)
 	{
 		
 	}
-	public function addCoin(id, value)
+	public function	deleteCRock(id)
 	{
 		
 	}
-	public function addGem(id, value)
+	public function deleteCPlayer(id)
 	{
 		
 	}
-	public function	deleteRock(id)
+	public function deleteCBomb(id)
 	{
 		
 	}
-	public function deletePlayer(id)
+	public function deleteCCoin(id)
 	{
 		
 	}
-	public function deleteBomb(id)
+	public function deleteCGem(id)
 	{
 		
 	}
-	public function deleteCoin(id)
+	public function	modCRock(id, value)
 	{
 		
 	}
-	public function deleteGem(id)
+	public function modCPlayer(id:String, value:String)
+	{
+		
+		var u = value.substr(0, 4);
+		var v = value.substr(5, 4);
+		trace(u);
+		trace(v);
+		if (u.charAt(3) == '.')
+			u = u.substr(0, 3);
+		if (v.charAt(3) == '.')
+			v = v.substr(0, 3);
+		trace(u);
+		trace(v);
+		while (u.charAt(0) == "0")
+			u = u.substr(1);
+		while (v.charAt(0) == "0")
+			v = v.substr(1);
+		trace(u);
+		trace(v);
+		var r = Std.parseFloat(u);
+		var s = Std.parseFloat(v);
+		trace(r);
+		trace(s);
+		_grpPlayer.members[0].x = r;
+		_grpPlayer.members[0].y = s;
+	}
+	public function modCBomb(id, value)
 	{
 		
 	}
-	public function	modRock(id, value)
+	public function modCCoin(id, value)
 	{
 		
 	}
-	public function modPlayer(id, value)
-	{
-		
-	}
-	public function modBomb(id, value)
-	{
-		
-	}
-	public function modCoin(id, value)
-	{
-		
-	}
-	public function modGem(id, value)
+	public function modCGem(id, value)
 	{
 		
 	}

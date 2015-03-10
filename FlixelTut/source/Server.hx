@@ -56,10 +56,43 @@ class Server extends ThreadServer<ClientData, Message>
 			while (s.length < 4)
 				s = "0" + s;
 			
-			
-			var str:String = "1x1100" + r + "." + s + "\n";
+			var uid:String = Std.string(o.id);
+			while (uid.length < 3)
+				uid = "0" + uid;
+			var str:String = "1x1"+o.type+ uid + r + "." + s + "\n";
 			sendData(c.sock,str);
 		}
+		for (o in state._grpGold)
+		{
+			var s:String = Std.string(o.y).substr(0, 4);
+			var r:String = Std.string(o.x).substr(0, 4);
+			while (r.length < 4)
+				r = "0" + r;
+			while (s.length < 4)
+				s = "0" + s;
+			
+			var uid:String = Std.string(o.id);
+			while (uid.length < 3)
+				uid = "0" + uid;
+			var str:String = "1x4"+o.type+ uid + r + "." + s + "\n";
+			sendData(c.sock,str);
+		}
+		for (o in state._grpPlayer)
+		{
+			var s:String = Std.string(o.y).substr(0, 4);
+			var r:String = Std.string(o.x).substr(0, 4);
+			while (r.length < 4)
+				r = "0" + r;
+			while (s.length < 4)
+				s = "0" + s;
+			
+			var uid:String = Std.string(o.id);
+			while (uid.length < 3)
+				uid = "0" + uid;
+			var str:String = "1x2"+o.type+ uid + r + "." + s + "\n";
+			sendData(c.sock,str);
+		}
+		
 		return c;
 	}
 	override function clientDisconnected(c:ClientData)

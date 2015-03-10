@@ -15,6 +15,7 @@ class Sid extends Player
 	public function new(X:Float=0, Y:Float=0, gam:PlayState) 
 	{
 		super(X, Y, gam);
+		type = 2;
 		blinkSnd = FlxG.sound.load(AssetPaths.Jump3__wav);
 		loadGraphic(AssetPaths.Game_Template_Miner_Sid__png, false, 16, 16);
 		setFacingFlip(FlxObject.RIGHT, false, false);

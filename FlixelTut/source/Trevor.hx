@@ -16,6 +16,7 @@ class Trevor extends Player
 	public function new(X:Float=0, Y:Float=0, gam:PlayState) 
 	{
 		super(X, Y, gam);
+		type = 3;
 		ballSnd=FlxG.sound.load(AssetPaths.Laser_Shoot14__wav);
 		loadGraphic(AssetPaths.Game_Template_Miner_Trevor__png, false, 16, 16);
 		setFacingFlip(FlxObject.RIGHT, false, false);

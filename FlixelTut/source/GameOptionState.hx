@@ -58,7 +58,7 @@ class GameOptionState extends FlxState
 	
 	private function clickSandbox():Void
 	{
-		var state:MenuState = new MenuState();
+		var state:ServerState = new ServerState();
 		state.gameMode = 2;
 		FlxG.switchState(state);
 	}

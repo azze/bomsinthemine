@@ -14,6 +14,7 @@ class Gravel extends Rock
 		this.density = 30;
 		this.maxDensity = 30;
 		this.dropChance = 0.1;
+		type = 3;
 	}
 	
 	override public function update():Void 

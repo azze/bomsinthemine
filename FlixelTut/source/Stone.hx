@@ -14,6 +14,8 @@ class Stone extends Rock
 		this.density = 100;
 		this.maxDensity = 100;
 		this.dropChance = 0.05;
+		
+		type = 1;
 	}
 	
 	override public function update():Void 
