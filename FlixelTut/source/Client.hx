@@ -19,14 +19,16 @@ class Client
 	{
 		sock = new Socket();
 		try{
-			sock.connect(new Host("localhost"), 5000);
+			sock.connect(new Host("91.65.68.4"), 5000);
+			trace("connected to server");
 		}
 		catch (msg:String) {
+			trace("connection failed");
 			trace(msg);
 		}
 	}
 	
-	public function read():String 
+	public function read():String
 	{
 		data = sock.input.readLine();
 		trace(data);

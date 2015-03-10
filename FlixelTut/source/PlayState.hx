@@ -55,6 +55,7 @@ class PlayState extends FlxState
 	{
 		if (gameType == 1){
 			server = new Server();
+			server.state = this;
 			serverThread = Thread.create(relayGameInfo);
 			runServer = Thread.create(runIt);
 		}
@@ -71,8 +72,6 @@ class PlayState extends FlxState
 		_grpGold = new FlxTypedGroup<Gold>();
 		_grpGems = new FlxTypedGroup<Gem>();
 		_grpProjectile = new FlxTypedGroup<Projectile>();
-	
-	
 		add(_grpStones);
 		add(_grpGold);
 		add(_grpGems);
@@ -211,7 +210,8 @@ class PlayState extends FlxState
 	}
 	public function runIt():Void 
 	{
-		server.run("localhost", 5000);
+		trace("starting server...");
+		server.run("192.168.178.20", 5000);
 		
 	}
 	public function relayGameInfo():Void 

@@ -39,17 +39,32 @@ class Server extends ThreadServer<ClientData, Message>
 {
 	public static var clients:List<ClientData> = new List<ClientData>();		
 	public var theNumber:Int = 0;
-	
+	public var state:PlayState;
 	
 	override function clientConnected(sock:Socket):ClientData
 	{
+		trace("client connected");
 		var c:ClientData = new ClientData(sock, theNumber);
 		theNumber = theNumber + 1;
 		clients.add(c);
+		for (o in state._grpStones)
+		{
+			var s:String = Std.string(o.y).substr(0, 4);
+			var r:String = Std.string(o.x).substr(0, 4);
+			while (r.length < 4)
+				r = "0" + r;
+			while (s.length < 4)
+				s = "0" + s;
+			
+			
+			var str:String = "1x1100" + r + "." + s + "\n";
+			sendData(c.sock,str);
+		}
 		return c;
 	}
 	override function clientDisconnected(c:ClientData)
 	{
+		trace("client disconnected");
 		clients.remove(c);
 	}
 	override function readClientMessage(c:ClientData, buf:Bytes, pos:Int, len:Int)
@@ -79,6 +94,7 @@ class Server extends ThreadServer<ClientData, Message>
 	{
 		str = str + "\n";
 		for (c in clients) {
+			trace(str);
 			sendData(c.sock, str);
 		}
 		
