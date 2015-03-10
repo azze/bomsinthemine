@@ -211,7 +211,7 @@ class PlayState extends FlxState
 	}
 	public function runIt():Void 
 	{
-		server.run("localhost", 5000);
+		server.run("192.168.178.22", 5000);
 		
 	}
 	public function relayGameInfo():Void 

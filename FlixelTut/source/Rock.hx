@@ -12,6 +12,7 @@ class Rock extends FlxSprite
 	public var density:Float = 10;
 	public var maxDensity:Float = 10;
 	public var dropChance:Float = 0.1;
+	public var id = 0;
 	
 	public function new(X:Float=0, Y:Float=0) 
 	{
