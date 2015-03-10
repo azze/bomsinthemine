@@ -11,6 +11,7 @@ class Bomb extends FlxSprite
 	public var damage:Float = 0;
 	public var radius:Float = 0;
 	public var exploded:Bool = false;
+	public var id:Int = 0;
 	
 	public function new(X:Float = 0, Y:Float =0) 
 	{
