@@ -7,6 +7,7 @@ import sys.net.UdpSocket;
 import neko.vm.Thread;
 import flixel.group.FlxTypedGroup;
 import neko.Lib;
+import flixel.FlxG;
 
 /**
  * ...
@@ -18,28 +19,72 @@ class ClientState extends PlayState
 	var client:Client;
 	var clientThread:Thread;
 	var orders:List<String>;
+	var _up:Bool = false;
+	var _down:Bool = false;
+	var _left:Bool = false;
+	var _right:Bool = false;
+	var _C:Bool = false;
+	var _X:Bool = false;
+	var _V:Bool = false;
+	var _space:Bool = false;
+	var msg:String;
 	override public function create():Void
 	{
 		super.create();
 		client = new Client();
-		clientThread = Thread.create(getInfo);
+		client.write(playerClass + "\n");
+		
+		clientThread = Thread.create(communicate);
 		orders = new List<String>();
 		
 		
 	}
 	
-	public function getInfo()
+	public function communicate()
 	{
 		while (true)
 		{
+			Thread.readMessage(true);
 			var str:String = client.read();
 			if(str.length>1)
 				orders.add(str);
+			client.write(msg);
+			
 		}
 	}
+	public function handleInput():Void
+	{
+		_up = FlxG.keys.anyPressed(["UP", "W"]);
+		_down = FlxG.keys.anyPressed(["DOWN", "S"]);
+		_left = FlxG.keys.anyPressed(["LEFT", "A"]);
+		_right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+		_C = FlxG.keys.pressed.C;
+		_X = FlxG.keys.justPressed.X;
+		_V = FlxG.keys.pressed.V;
+		_space = FlxG.keys.pressed.SPACE;
+		msg = "";
+		msg = appendBool(msg, _up);
+		msg = appendBool(msg, _down);
+		msg = appendBool(msg, _left);
+		msg = appendBool(msg, _right);
+		msg = appendBool(msg, _C);
+		msg = appendBool(msg, _V);
+		msg = appendBool(msg, _X);
+		msg = appendBool(msg, _space);
+		msg = msg + "!";
+	}
+	public function appendBool(msg:String, bl:Bool):String
+	{
+		if (bl)
+			msg = msg + "1";
+		else
+			msg = msg +"0";
+		return msg;
+	}
+	
 	override public function update():Void
 	{
-		
+		handleInput();
 		while(!orders.isEmpty()) {
 			//befehle vom server bestehen aus Strings von der Länge 8
 			var item:String = orders.pop();
@@ -53,7 +98,6 @@ class ClientState extends PlayState
 			var group:String = item.substr(1, 2);
 			var id:String = item.substr(3, 4);
 			var value:String = item.substr(7);
-			trace("order: " + order +" group: " + group + " id: " + id + " value: " +value);
 			switch(order) {
 				//create entity
 				case "1":
@@ -116,6 +160,7 @@ class ClientState extends PlayState
 			}
 			
 		}
+		clientThread.sendMessage("hi");
 		super.update();
 	}
 	public function	addCRock(id:String, value:String)
@@ -188,29 +233,24 @@ class ClientState extends PlayState
 	}
 	public function modCPlayer(id:String, value:String)
 	{
-		
-		var u = value.substr(0, 4);
-		var v = value.substr(5, 4);
-		trace(u);
-		trace(v);
-		if (u.charAt(3) == '.')
-			u = u.substr(0, 3);
-		if (v.charAt(3) == '.')
-			v = v.substr(0, 3);
-		trace(u);
-		trace(v);
-		while (u.charAt(0) == "0")
-			u = u.substr(1);
-		while (v.charAt(0) == "0")
-			v = v.substr(1);
-		trace(u);
-		trace(v);
-		var r = Std.parseFloat(u);
-		var s = Std.parseFloat(v);
-		trace(r);
-		trace(s);
-		_grpPlayer.members[0].x = r;
-		_grpPlayer.members[0].y = s;
+		switch(value.charAt(0)) {
+			case 'p':
+				var u = value.substr(1, 4);
+				var v = value.substr(5, 4);
+				if (u.charAt(3) == '.')
+					u = u.substr(0, 3);
+				if (v.charAt(3) == '.')
+					v = v.substr(0, 3);
+				while (u.charAt(0) == "0")
+					u = u.substr(1);
+				while (v.charAt(0) == "0")
+					v = v.substr(1);
+				var r = Std.parseFloat(u);
+				var s = Std.parseFloat(v);
+				var mem:Player = getMemberbyID(id.substr(1, 3));
+				mem.x = r;
+				mem.y = s;
+		}
 	}
 	public function modCBomb(id, value)
 	{
@@ -222,6 +262,24 @@ class ClientState extends PlayState
 	}
 	public function modCGem(id, value)
 	{
+		
+	}
+	public function getMemberbyID(str:String):Player 
+	{
+		if (str.charAt(0) == '0')
+		{
+			str = str.substr(1);
+			if (str.charAt(0) == '0')
+			{
+				str = str.substr(1);
+			}
+		}
+		var uid = Std.parseInt(str);
+		for ( m in _grpPlayer) {
+			if (m.id == uid)
+				return m;
+		}
+		return null;
 		
 	}
 }

@@ -61,7 +61,11 @@ class MenuState extends FlxState
 	
 	private function clickJim():Void
 	{
-		var state:ServerState = new ServerState();
+		var state:PlayState;
+		if (gameMode == 0)
+			state = new ClientState();
+		else
+			state= new ServerState();
 		state.playerClass = 0;
 		state.gameType = gameMode;
 		FlxG.switchState(state);
@@ -69,7 +73,11 @@ class MenuState extends FlxState
 	
 	private function clickSid():Void
 	{
-		var state:ServerState = new ServerState();
+		var state:PlayState;
+		if (gameMode == 0)
+			state = new ClientState();
+		else
+			state = new ServerState();
 		state.playerClass = 1;
 		state.gameType = gameMode;
 		FlxG.switchState(state);
@@ -77,7 +85,11 @@ class MenuState extends FlxState
 	
 	private function clickTrevor():Void
 	{
-		var state:ServerState = new ServerState();
+		var state:PlayState;
+		if (gameMode == 0)
+			state = new ClientState();
+		else
+			state = new ServerState();
 		state.playerClass = 2;
 		state.gameType = gameMode;
 		FlxG.switchState(state);

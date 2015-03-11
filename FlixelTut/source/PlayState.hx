@@ -35,6 +35,7 @@ class PlayState extends FlxState
 	public var nextProjectileID:Int = 0;
 	public var nextGoldID:Int = 0;
 	public var nextGemID:Int = 0;
+	public var nextPlayerID:Int = 0;
 	public var _grpStones:FlxTypedGroup<Rock>;
 	public var _grpGold:FlxTypedGroup<Gold>;
 	public var _grpGems:FlxTypedGroup<Gem>;
@@ -151,6 +152,20 @@ class PlayState extends FlxState
 		setGrid(C.x, C.y, true);
 		_grpGems.add(C);
 		
+		}
+	}
+	public function addPlayer(P:Player) {
+		P.id = nextPlayerID;
+		nextPlayerID = nextPlayerID + 1;
+		_grpPlayer.add(P);
+		trace("player added: " + P.id);
+		if (nextPlayerID == 1) {
+			P.x = 200;
+			P.y = 400;
+		}
+		else if (nextPlayerID == 2) {
+			P.x = 300;
+			P.y = 400;
 		}
 	}
 	/**----------------------------- Armageddon -----------------------------*/

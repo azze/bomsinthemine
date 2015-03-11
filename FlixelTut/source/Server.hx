@@ -39,7 +39,7 @@ class Server extends ThreadServer<ClientData, Message>
 {
 	public static var clients:List<ClientData> = new List<ClientData>();		
 	public var theNumber:Int = 0;
-	public var state:PlayState;
+	public var state:ServerState;
 	
 	override function clientConnected(sock:Socket):ClientData
 	{
@@ -77,6 +77,18 @@ class Server extends ThreadServer<ClientData, Message>
 			var str:String = "1x4"+o.type+ uid + r + "." + s + "\n";
 			sendData(c.sock,str);
 		}
+		
+		var plType:String = c.sock.input.readLine();
+		trace(plType);
+		switch(plType.charAt(0))
+		{
+			case '0':
+				state.addPlayer(new Jim(0,0,state));
+			case '1':
+				state.addPlayer(new Sid(0,0,state));
+			case '2':
+				state.addPlayer(new Trevor(0,0,state));
+		}
 		for (o in state._grpPlayer)
 		{
 			var s:String = Std.string(o.y).substr(0, 4);
@@ -92,7 +104,6 @@ class Server extends ThreadServer<ClientData, Message>
 			var str:String = "1x2"+o.type+ uid + r + "." + s + "\n";
 			sendData(c.sock,str);
 		}
-		
 		return c;
 	}
 	override function clientDisconnected(c:ClientData)
@@ -107,7 +118,7 @@ class Server extends ThreadServer<ClientData, Message>
 		while (cpos < (pos+len) && !complete)
 		{
 			//check for a period/full stop (i.e.:  "." ) to signify a complete message 
-			complete = (buf.get(cpos) == 46);
+			complete = (buf.get(cpos) == 33);
 			cpos++;
 		}
 
@@ -121,13 +132,12 @@ class Server extends ThreadServer<ClientData, Message>
 	}
 	override function clientMessage( c : ClientData, msg : Message )
 	{
-		trace(msg.content);
+		state.message = msg.content;
 	}
 	public function inform(str:String)
 	{
 		str = str + "\n";
 		for (c in clients) {
-			trace(str);
 			sendData(c.sock, str);
 		}
 		

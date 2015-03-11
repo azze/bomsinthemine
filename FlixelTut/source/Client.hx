@@ -31,8 +31,12 @@ class Client
 	public function read():String
 	{
 		data = sock.input.readLine();
-		trace(data);
+		
 		return data;
+	}
+	public function write(str:String):Void 
+	{
+		sock.write(str);
 	}
 	
 }

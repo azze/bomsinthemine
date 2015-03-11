@@ -16,6 +16,7 @@ class ServerState extends PlayState
 	public var runServer:Thread;
 	private var _map:FlxOgmoLoader;
 	private var _mGround:FlxTilemap;
+	public var message:String="";
 	
 	override public function create():Void 
 	{
@@ -27,7 +28,6 @@ class ServerState extends PlayState
 		add(_mGround);
 		super.create();
 		if (gameType == 1) {
-			trace("2");
 			server = new Server();
 			server.state = this;
 			serverThread = Thread.create(relayGameInfo);
@@ -36,14 +36,13 @@ class ServerState extends PlayState
 		
 		switch(playerClass){
 			case 0:
-				_player = new Jim(0, 0, this);
+				addPlayer(new Jim(0, 0, this));
 			case 1:
-				_player = new Sid(0, 0, this);
+				addPlayer(new Sid(0, 0, this));
 			case 2:
-				_player = new Trevor(0, 0, this);
+				addPlayer(new Trevor(0, 0, this));
 		}
-		_grpPlayer.add(_player);
-		
+		_player = _grpPlayer.members[0];
 		add(_player.bombs);
 		
 		_map.loadEntities(placeEntities, "entities");
@@ -52,12 +51,8 @@ class ServerState extends PlayState
 	{
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
-		if (entityName == "player")
-		{
-			_player.x = x;
-			_player.y = y;
-		}
-		else if (entityName == "rocks")
+		
+		 if (entityName == "rocks")
 		{
 			addRock(new Stone(x, y));
 		}
@@ -69,89 +64,108 @@ class ServerState extends PlayState
 	override public function update():Void
 	{
 		super.update();
-		FlxG.collide(_player, _grpStones);
+		FlxG.collide(_grpPlayer, _grpStones);
+		for(ply in _grpPlayer){
+			_weapons = ply.weapon;
 		
-		_weapons = _player.weapon;
-		
-		if (_player.bombTimer != 0)
-		{
-			
-			_ready =Std.int(_player.bombTimer +1) ;
-		}
-		
-		/**--- this sword is heavy---*/
-		if (_player.attacked) {
-			var obj:FlxObject;
-			switch(_player.facing){
-				case FlxObject.LEFT:
-					obj= new FlxObject(_player.getMidpoint().x-_gridSize, _player.getMidpoint().y);
-				case FlxObject.UP:
-					obj= new FlxObject(_player.getMidpoint().x, _player.getMidpoint().y - _gridSize);
-			
-				case FlxObject.RIGHT:
-					obj= new FlxObject(_player.getMidpoint().x+ _gridSize, _player.getMidpoint().y );
-
-				case FlxObject.DOWN:
-					obj= new FlxObject(_player.getMidpoint().x, _player.getMidpoint().y + _gridSize);
-				default:
-					obj= new FlxObject(_player.getMidpoint().x, _player.getMidpoint().y );
-			}
-			FlxG.overlap(obj, _grpStones, attackStone);
-			obj.kill();
-			
-			_player.attacked = false;
-			
-		}
-		/**---"First shalt thou take out the Holy Pin, then shalt thou count to three, no more, no less. 
-		 * 	   Three shall be the number thou shalt count, and the number of the counting shall be three.
-		 * 	   Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. 
-		 *     Five is right out. Once the number three, being the third number, be reached, 
-		 *     then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who being naughty in My sight, 
-		 *     shall snuff it."---*/
-		for (i in 0..._player.bombs.members.length)
-		{
-			var bob:Bomb = _player.bombs.members[i];
-			if (bob.exploded)
+			if (ply.bombTimer != 0)
 			{
-				sndExplosion.play();
-				for (j in 0..._grpStones.length)
-				{	
-					if(_grpStones.members[j].alive){
-						var poin:FlxPoint = _grpStones.members[j].getMidpoint();
+			
+				_ready =Std.int(ply.bombTimer +1) ;
+			}
+		
+			/**--- this sword is heavy---*/
+			if (ply.attacked) {
+				var obj:FlxObject;
+				switch(ply.facing){
+					case FlxObject.LEFT:
+						obj= new FlxObject(ply.getMidpoint().x-_gridSize, ply.getMidpoint().y);
+					case FlxObject.UP:
+						obj= new FlxObject(ply.getMidpoint().x, ply.getMidpoint().y - _gridSize);
+			
+					case FlxObject.RIGHT:
+						obj= new FlxObject(ply.getMidpoint().x+ _gridSize, ply.getMidpoint().y );
+
+					case FlxObject.DOWN:
+						obj= new FlxObject(ply.getMidpoint().x, ply.getMidpoint().y + _gridSize);
+					default:
+						obj= new FlxObject(ply.getMidpoint().x, ply.getMidpoint().y );
+				}
+				FlxG.overlap(obj, _grpStones, attackStone);
+				obj.kill();
+			
+				ply.attacked = false;
+				
+			}
+			/**---"First shalt thou take out the Holy Pin, then shalt thou count to three, no more, no less. 
+			* 	   Three shall be the number thou shalt count, and the number of the counting shall be three.
+			* 	   Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. 
+			*     Five is right out. Once the number three, being the third number, be reached, 
+			*     then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who being naughty in My sight, 
+			*     shall snuff it."---*/
+			for (i in 0...ply.bombs.members.length)
+			{
+				var bob:Bomb = ply.bombs.members[i];
+				if (bob.exploded)
+				{
+					sndExplosion.play();
+					for (j in 0..._grpStones.length)
+					{	
+						if(_grpStones.members[j].alive){
+							var poin:FlxPoint = _grpStones.members[j].getMidpoint();
 						
-						var dist:Float = distance(poin, bob.getMidpoint());
-						if (dist < bob.radius) {
-							_grpStones.members[j].damage(bob.damage * (bob.radius - dist) / bob.radius);
-							if (!_grpStones.members[j].alive)
-								removeRock(_grpStones.members[j]);
+							var dist:Float = distance(poin, bob.getMidpoint());
+							if (dist < bob.radius) {
+								_grpStones.members[j].damage(bob.damage * (bob.radius - dist) / bob.radius);
+								if (!_grpStones.members[j].alive)
+									removeRock(_grpStones.members[j]);
+							}
 						}
 					}
+					
+					var poin2:FlxPoint = ply.getMidpoint();
+					var dist2:Float = distance(poin2, bob.getMidpoint());
+				
+					if (dist2 < bob.radius) {
+						playerDamage(bob.damage * (bob.radius - dist2) / bob.radius);
+					}
+					bob.kill();
+					bob.exploded = false;
+					bob.destroy();
+					
 				}
-				
-				var poin2:FlxPoint = _player.getMidpoint();
-				var dist2:Float = distance(poin2, bob.getMidpoint());
-				
-				if (dist2 < bob.radius) {
-					playerDamage(bob.damage * (bob.radius - dist2) / bob.radius);
-				}
-				bob.kill();
-				bob.exploded = false;
-				bob.destroy();
-				
 			}
+			FlxG.overlap(ply, _grpGold, pickGold);
+			FlxG.overlap(ply, _grpGems, pickGem);
 		}
-		FlxG.overlap(_player, _grpGold, pickGold);
-		FlxG.overlap(_player, _grpGems, pickGem);
 		FlxG.overlap(_grpProjectile, _grpStones, hitStone);
 		
 		handleInput();
-		
+		if (message.length > 7)
+		{
+			var ply:Player = _grpPlayer.members[1];
+			ply._up = intToBool(message.charAt(0));
+			ply._down = intToBool(message.charAt(1));
+			ply._left = intToBool(message.charAt(2));
+			ply._right = intToBool(message.charAt(3));
+			ply._C = intToBool(message.charAt(4));
+			ply._V = intToBool(message.charAt(5));
+			ply._X = intToBool(message.charAt(6));
+			ply._space = intToBool(message.charAt(7));
+		}
 		
 		
 		if (gameType == 1) {
 			
 			serverThread.sendMessage("hi");
 		}
+	}
+	public function intToBool(a:String):Bool
+	{
+		if (a == "0")
+			return false;
+		else
+			return true;
 	}
 	public function runIt():Void 
 	{
@@ -164,19 +178,20 @@ class ServerState extends PlayState
 		while (true)
 		{
 			Thread.readMessage(true);
-			var o:Player = _player;
-			var s:String = Std.string(o.y).substr(0, 4);
-			var r:String = Std.string(o.x).substr(0, 4);
-			while (r.length < 4)
-				r = "0" + r;
-			while (s.length < 4)
-				s = "0" + s;
+			for(o in _grpPlayer){
+				var s:String = Std.string(o.y).substr(0, 4);
+				var r:String = Std.string(o.x).substr(0, 4);
+				while (r.length < 4)
+					r = "0" + r;
+				while (s.length < 4)
+					s = "0" + s;
 			
-			var uid:String = Std.string(o.id);
-			while (uid.length < 3)
-				uid = "0" + uid;
-			var str:String = "3x2"+o.type+ uid + r + "." + s + "\n";
-			server.inform(str);
+				var uid:String = Std.string(o.id);
+				while (uid.length < 3)
+					uid = "0" + uid;
+				var str:String = "3x2"+o.type+ uid +"p" + r + s + "\n";
+				server.inform(str);
+			}
 	
 		}
 	}
