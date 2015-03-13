@@ -38,7 +38,7 @@ class Message
 class Server extends ThreadServer<ClientData, Message>
 {
 	public static var clients:List<ClientData> = new List<ClientData>();		
-	public var theNumber:Int = 0;
+	public var theNumber:Int = 1;
 	public var state:ServerState;
 	
 	override function clientConnected(sock:Socket):ClientData
@@ -47,6 +47,7 @@ class Server extends ThreadServer<ClientData, Message>
 		var c:ClientData = new ClientData(sock, theNumber);
 		theNumber = theNumber + 1;
 		clients.add(c);
+		var str:String = "";
 		for (o in state._grpStones)
 		{
 			var s:String = Std.string(o.y).substr(0, 4);
@@ -59,8 +60,8 @@ class Server extends ThreadServer<ClientData, Message>
 			var uid:String = Std.string(o.id);
 			while (uid.length < 3)
 				uid = "0" + uid;
-			var str:String = "1x1"+o.type+ uid + r + "." + s + "\n";
-			sendData(c.sock,str);
+			 str =str+ "1x1"+o.type+ uid + r + "." + s + "\n";
+			
 		}
 		for (o in state._grpGold)
 		{
@@ -74,8 +75,8 @@ class Server extends ThreadServer<ClientData, Message>
 			var uid:String = Std.string(o.id);
 			while (uid.length < 3)
 				uid = "0" + uid;
-			var str:String = "1x4"+o.type+ uid + r + "." + s + "\n";
-			sendData(c.sock,str);
+			str =str+ "1x4"+o.type+ uid + r + "." + s + "\n";
+			
 		}
 		
 		var plType:String = c.sock.input.readLine();
@@ -101,9 +102,10 @@ class Server extends ThreadServer<ClientData, Message>
 			var uid:String = Std.string(o.id);
 			while (uid.length < 3)
 				uid = "0" + uid;
-			var str:String = "1x2"+o.type+ uid + r + "." + s + "\n";
-			sendData(c.sock,str);
+			str =str+ "1x2"+o.type+ uid + r + "." + s + "\n";
+			
 		}
+		sendData(c.sock,str);
 		return c;
 	}
 	override function clientDisconnected(c:ClientData)
@@ -132,7 +134,35 @@ class Server extends ThreadServer<ClientData, Message>
 	}
 	override function clientMessage( c : ClientData, msg : Message )
 	{
-		state.message = msg.content;
+		var arr:Array<String> = msg.content.split("\n");
+		var playa:Player = state._grpPlayer.members[c.id];
+		var bl:Bool;
+		for (str in arr) {
+			if (str.charAt(1) == "1")
+				bl = true;
+			else
+				bl = false;
+			switch(str.charAt(0)) {
+				case "u":
+					playa._up = bl;
+				case "d":
+					playa._down = bl;
+				case "l":
+					playa._left = bl;
+				case "r":
+					playa._right = bl;
+				case "v":
+					playa._V = bl;
+				case "c":
+					playa._C = bl;
+				case "x":
+					playa._X = bl;
+				case "q":
+					playa._space = bl;
+					
+			}
+		}
+		state.sendCoordinates(playa);
 	}
 	public function inform(str:String)
 	{

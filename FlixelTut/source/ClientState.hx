@@ -28,6 +28,7 @@ class ClientState extends PlayState
 	var _V:Bool = false;
 	var _space:Bool = false;
 	var msg:String;
+	var changes:Bool = false;
 	override public function create():Void
 	{
 		super.create();
@@ -44,34 +45,87 @@ class ClientState extends PlayState
 	{
 		while (true)
 		{
-			Thread.readMessage(true);
+			
 			var str:String = client.read();
 			if(str.length>1)
 				orders.add(str);
-			client.write(msg);
+			
 			
 		}
 	}
 	public function handleInput():Void
 	{
-		_up = FlxG.keys.anyPressed(["UP", "W"]);
-		_down = FlxG.keys.anyPressed(["DOWN", "S"]);
-		_left = FlxG.keys.anyPressed(["LEFT", "A"]);
-		_right = FlxG.keys.anyPressed(["RIGHT", "D"]);
-		_C = FlxG.keys.pressed.C;
-		_X = FlxG.keys.justPressed.X;
-		_V = FlxG.keys.pressed.V;
-		_space = FlxG.keys.pressed.SPACE;
 		msg = "";
-		msg = appendBool(msg, _up);
-		msg = appendBool(msg, _down);
-		msg = appendBool(msg, _left);
-		msg = appendBool(msg, _right);
-		msg = appendBool(msg, _C);
-		msg = appendBool(msg, _V);
-		msg = appendBool(msg, _X);
-		msg = appendBool(msg, _space);
+		if (_up != FlxG.keys.anyPressed(["UP", "W"])) {
+			_up = !_up;
+			msg = msg + "u";
+			msg = appendBool(msg, _up);
+			msg = msg + "\n";
+			_grpPlayer.members[1]._up = _up;
+			changes = true;
+		}
+		if (_down != FlxG.keys.anyPressed(["DOWN", "S"])) {
+			_down = !_down;
+			msg = msg + "d";
+			msg = appendBool(msg, _down);
+			msg = msg + "\n";
+			_grpPlayer.members[1]._down = _down;
+			changes = true;
+		}
+		if (_left != FlxG.keys.anyPressed(["LEFT", "A"])) {
+			_left = !_left ;
+			msg = msg + "l";
+			msg = appendBool(msg,_left );
+			msg = msg + "\n";
+			_grpPlayer.members[1]._left  = _left ;
+			changes = true;
+		}
+		if (_right != FlxG.keys.anyPressed(["RIGHT", "D"])) {
+			_right = !_right;
+			msg = msg + "r";
+			msg = appendBool(msg, _right);
+			msg = msg + "\n";
+			_grpPlayer.members[1]._right = _right;
+			changes = true;
+		}
+		if (_C != FlxG.keys.pressed.C) {
+			_C = !_C;
+			msg = msg + "c";
+			msg = appendBool(msg, _C);
+			msg = msg + "\n";
+			_grpPlayer.members[1]._C = _C;
+			changes = true;
+		}
+		if (_X = FlxG.keys.justPressed.X) {
+			_X = !_X;
+			msg = msg + "x";
+			msg = appendBool(msg, _X);
+			msg = msg + "\n";
+			_grpPlayer.members[1]._X = _X;
+			changes = true;
+		}
+		if (_V = FlxG.keys.pressed.V) {
+			_V = !_V;
+			msg = msg + "v";
+			msg = appendBool(msg, _V);
+			msg = msg + "\n";
+			_grpPlayer.members[1]._V = _V;
+			changes = true;
+		}
+		if (_space = FlxG.keys.pressed.SPACE) {
+			_space = !_space;
+			msg = msg + "q";
+			msg = appendBool(msg, _space);
+			msg = msg + "\n";
+			_grpPlayer.members[1]._space = _space;
+			changes = true;
+		}
+	
 		msg = msg + "!";
+		if(changes){
+				client.write(msg);
+				changes = false;
+			}
 	}
 	public function appendBool(msg:String, bl:Bool):String
 	{
@@ -85,6 +139,7 @@ class ClientState extends PlayState
 	override public function update():Void
 	{
 		handleInput();
+		FlxG.collide(_grpPlayer, _grpStones);
 		while(!orders.isEmpty()) {
 			//befehle vom server bestehen aus Strings von der Länge 8
 			var item:String = orders.pop();
@@ -98,6 +153,12 @@ class ClientState extends PlayState
 			var group:String = item.substr(1, 2);
 			var id:String = item.substr(3, 4);
 			var value:String = item.substr(7);
+			var playa:Player = _grpPlayer.members[0];
+			var bl:Bool;
+			if (group.charAt(0) == "1")
+				bl = true;
+			else
+				bl = false;
 			switch(order) {
 				//create entity
 				case "1":
@@ -156,6 +217,23 @@ class ClientState extends PlayState
 						case "x5":
 							modCGem(id, value);
 					}
+				case "u":
+					playa._up = bl;
+				case "d":
+					playa._down = bl;
+				case "l":
+					playa._left = bl;
+				case "r":
+					playa._right = bl;
+				case "v":
+					playa._V = bl;
+				case "c":
+					playa._C = bl;
+				case "x":
+					playa._X = bl;
+				case "q":
+					playa._space = bl;
+				
 					
 			}
 			

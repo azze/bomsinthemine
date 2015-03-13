@@ -19,7 +19,7 @@ class Client
 	{
 		sock = new Socket();
 		try{
-			sock.connect(new Host("91.65.68.4"), 5000);
+			sock.connect(new Host("91.65.71.72"), 5000);
 			trace("connected to server");
 		}
 		catch (msg:String) {

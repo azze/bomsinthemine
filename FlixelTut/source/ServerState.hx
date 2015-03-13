@@ -16,8 +16,9 @@ class ServerState extends PlayState
 	public var runServer:Thread;
 	private var _map:FlxOgmoLoader;
 	private var _mGround:FlxTilemap;
-	public var message:String="";
-	
+	public var inMsg:String = "";
+	public var changes:Bool = false;
+	public var outMsg:String = "";
 	override public function create():Void 
 	{
 		trace(gameType);
@@ -141,18 +142,7 @@ class ServerState extends PlayState
 		FlxG.overlap(_grpProjectile, _grpStones, hitStone);
 		
 		handleInput();
-		if (message.length > 7)
-		{
-			var ply:Player = _grpPlayer.members[1];
-			ply._up = intToBool(message.charAt(0));
-			ply._down = intToBool(message.charAt(1));
-			ply._left = intToBool(message.charAt(2));
-			ply._right = intToBool(message.charAt(3));
-			ply._C = intToBool(message.charAt(4));
-			ply._V = intToBool(message.charAt(5));
-			ply._X = intToBool(message.charAt(6));
-			ply._space = intToBool(message.charAt(7));
-		}
+		
 		
 		
 		if (gameType == 1) {
@@ -178,35 +168,99 @@ class ServerState extends PlayState
 		while (true)
 		{
 			Thread.readMessage(true);
-			for(o in _grpPlayer){
-				var s:String = Std.string(o.y).substr(0, 4);
-				var r:String = Std.string(o.x).substr(0, 4);
-				while (r.length < 4)
-					r = "0" + r;
-				while (s.length < 4)
-					s = "0" + s;
-			
-				var uid:String = Std.string(o.id);
-				while (uid.length < 3)
-					uid = "0" + uid;
-				var str:String = "3x2"+o.type+ uid +"p" + r + s + "\n";
-				server.inform(str);
+			if(outMsg.length>1){
+				server.inform(outMsg);
+				outMsg = "";
 			}
+			
 	
 		}
 	}
 	public function handleInput():Void
 	{
-		_player._up = FlxG.keys.anyPressed(["UP", "W"]);
-		_player._down = FlxG.keys.anyPressed(["DOWN", "S"]);
-		_player._left = FlxG.keys.anyPressed(["LEFT", "A"]);
-		_player._right = FlxG.keys.anyPressed(["RIGHT", "D"]);
-		_player._C = FlxG.keys.pressed.C;
-		_player._X = FlxG.keys.justPressed.X;
-		_player._V = FlxG.keys.pressed.V;
-		_player._space = FlxG.keys.pressed.SPACE;
+		
+		if (_player._up != FlxG.keys.anyPressed(["UP", "W"])) {
+			_player._up = !_player._up;
+			outMsg = outMsg + "u";
+			outMsg = appendBool(outMsg,_player._up);
+			outMsg = outMsg + "\n";
+			changes = true;
+		}
+		if (_player._down != FlxG.keys.anyPressed(["DOWN", "S"])) {
+			_player._down = !_player._down;
+			outMsg = outMsg + "d";
+			outMsg = appendBool(outMsg, _player._down);
+			outMsg = outMsg + "\n";
+			changes = true;
+		}
+		if (_player._left != FlxG.keys.anyPressed(["LEFT", "A"])) {
+			_player._left = !_player._left ;
+			outMsg = outMsg + "l";
+			outMsg = appendBool(outMsg,_player._left );
+			outMsg = outMsg + "\n";
+			changes = true;
+		}
+		if (_player._right != FlxG.keys.anyPressed(["RIGHT", "D"])) {
+			_player._right = !_player._right;
+			outMsg = outMsg + "r";
+			outMsg = appendBool(outMsg, _player._right);
+			outMsg = outMsg + "\n";
+			changes = true;
+		}
+		if (_player._C != FlxG.keys.pressed.C) {
+			_player._C = !_player._C;
+			outMsg = outMsg + "c";
+			outMsg = appendBool(outMsg, _player._C);
+			outMsg = outMsg + "\n";
+			changes = true;
+		}
+		if (_player._X = FlxG.keys.justPressed.X) {
+			_player._X = !_player._X;
+			outMsg = outMsg + "x";
+			outMsg = appendBool(outMsg, _player._X);
+			outMsg = outMsg + "\n";
+			changes = true;
+		}
+		if (_player._V = FlxG.keys.pressed.V) {
+			_player._V = !_player._V;
+			outMsg = outMsg + "v";
+			outMsg = appendBool(outMsg, _player._V);
+			outMsg = outMsg + "\n";
+			changes = true;
+		}
+		if (_player._space = FlxG.keys.pressed.SPACE) {
+			_player._space = !_player._space;
+			outMsg = outMsg + "q";
+			outMsg = appendBool(outMsg, _player._space);
+			outMsg = outMsg + "\n";
+			changes = true;
+		}
+		
+		sendCoordinates(_player);
 	}
-	
+	public function sendCoordinates(o:Player) 
+	{
+		var s:String = Std.string(o.y).substr(0, 4);
+		var r:String = Std.string(o.x).substr(0, 4);
+		while (r.length < 4)
+			r = "0" + r;
+		while (s.length < 4)
+			s = "0" + s;
+			
+		var uid:String = Std.string(o.id);
+		while (uid.length < 3)
+			uid = "0" + uid;
+		var str:String = "3x2" + o.type+ uid +"p" + r + s + "\n";
+		outMsg = outMsg+str;
+	}
+	public function appendBool(msg:String, bl:Bool):String
+	{
+		if (bl)
+			msg = msg + "1";
+		else
+			msg = msg +"0";
+		return msg;
+	}
 	public function playerDamage(dam:Float=0)
 	{
 		
