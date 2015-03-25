@@ -15,11 +15,12 @@ class Client
 	
 	var sock:Socket;
 	var data:String;
-	public function new() 
+	public function new(ip:String) 
 	{
+		trace(ip);
 		sock = new Socket();
 		try{
-			sock.connect(new Host("91.65.71.72"), 5000);
+			sock.connect(new Host(ip), 5000);
 			trace("connected to server");
 		}
 		catch (msg:String) {

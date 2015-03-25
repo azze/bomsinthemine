@@ -20,7 +20,8 @@ class MenuState extends FlxState
 	private var _sprJim:FlxSprite;
 	private var _sprSid:FlxSprite;
 	private var _sprTrevor:FlxSprite;
-	public var gameMode:Float=0;
+	public var gameMode:Float = 0;
+	public var ip:String = "";
 	
 	
 	/**
@@ -61,38 +62,34 @@ class MenuState extends FlxState
 	
 	private function clickJim():Void
 	{
-		var state:PlayState;
-		if (gameMode == 0)
-			state = new ClientState();
-		else
-			state= new ServerState();
-		state.playerClass = 0;
-		state.gameType = gameMode;
-		FlxG.switchState(state);
+		startGame(gameMode, 0);
 	}
 	
 	private function clickSid():Void
 	{
-		var state:PlayState;
-		if (gameMode == 0)
-			state = new ClientState();
-		else
-			state = new ServerState();
-		state.playerClass = 1;
-		state.gameType = gameMode;
-		FlxG.switchState(state);
+		startGame(gameMode, 1);
 	}
 	
 	private function clickTrevor():Void
 	{
-		var state:PlayState;
-		if (gameMode == 0)
-			state = new ClientState();
-		else
-			state = new ServerState();
-		state.playerClass = 2;
-		state.gameType = gameMode;
-		FlxG.switchState(state);
+		startGame(gameMode, 2);
+	}
+	public function startGame(i:Float, j:Int):Void
+	{
+		if (i == 0) {
+			var state:ClientState = new ClientState();
+			state.ip = ip;
+			state.setupIP();  
+			state.playerClass = j;
+			state.gameType = gameMode;
+			FlxG.switchState(state);
+		}
+		else {
+			var state:ServerState = new ServerState();
+			state.playerClass = j;
+			state.gameType = gameMode;
+			FlxG.switchState(state);
+		}
 	}
 	/**
 	 * Function that is called once every frame.

@@ -4,6 +4,8 @@ import flixel.text.FlxText;
 import flixel.FlxState;
 import flixel.FlxG;
 import flixel.util.FlxDestroyUtil;
+
+using flixel.util.FlxSpriteUtil;
 /**
  * ...
  * @author ...
@@ -13,6 +15,8 @@ class GameOptionState extends FlxState
 	private var _btnClient:FlxButton;
 	private var _btnServer:FlxButton;
 	private var _btnSandbox:FlxButton;
+	private var _inputHUD:InputHUD;
+	private var _btnOK:FlxButton;
 
 	override public function create():Void
 	{
@@ -26,7 +30,12 @@ class GameOptionState extends FlxState
 		add(_btnServer);
 		_btnSandbox = new FlxButton(64, 256, "Sandbox", clickSandbox);
 		add(_btnSandbox);
-		
+		_inputHUD = new InputHUD();
+		_btnOK = new FlxButton(_inputHUD._sprBack.x + 115, _inputHUD._sprBack.y + 75, "OK", clickOK);
+		_btnOK.screenCenter(true, false);
+		_btnOK.x = _btnOK.x + (_inputHUD._sprBack.width / 4);
+		add(_inputHUD);
+		_inputHUD.add(_btnOK);
 		super.create();
 	}
 	
@@ -44,9 +53,18 @@ class GameOptionState extends FlxState
 	
 	private function clickClient():Void
 	{
+		
+		_inputHUD.initiateInput();
+		
+	}
+		private function clickOK():Void
+	{
+		
 		var state:MenuState = new MenuState();
 		state.gameMode = 0;
+		state.ip = _inputHUD.getText();
 		FlxG.switchState(state);
+		
 	}
 	
 	private function clickServer():Void
@@ -59,7 +77,7 @@ class GameOptionState extends FlxState
 	private function clickSandbox():Void
 	{
 		var state:ServerState = new ServerState();
-		state.gameMode = 2;
+		state.gameType = 2;
 		FlxG.switchState(state);
 	}
 	/**

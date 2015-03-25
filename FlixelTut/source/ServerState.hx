@@ -160,7 +160,7 @@ class ServerState extends PlayState
 	public function runIt():Void 
 	{
 		trace("starting server...");
-		server.run("192.168.178.20", 5000);
+		server.run("10.0.1.183", 5000);
 		
 	}
 	public function relayGameInfo():Void 
@@ -214,21 +214,22 @@ class ServerState extends PlayState
 			outMsg = outMsg + "\n";
 			changes = true;
 		}
-		if (_player._X = FlxG.keys.justPressed.X) {
+		if (_player._X != FlxG.keys.justPressed.X) {
 			_player._X = !_player._X;
 			outMsg = outMsg + "x";
 			outMsg = appendBool(outMsg, _player._X);
 			outMsg = outMsg + "\n";
 			changes = true;
 		}
-		if (_player._V = FlxG.keys.pressed.V) {
+		if (_player._V != FlxG.keys.pressed.V) {
 			_player._V = !_player._V;
 			outMsg = outMsg + "v";
 			outMsg = appendBool(outMsg, _player._V);
 			outMsg = outMsg + "\n";
 			changes = true;
 		}
-		if (_player._space = FlxG.keys.pressed.SPACE) {
+		if (_player._space != FlxG.keys.pressed.SPACE) {
+		
 			_player._space = !_player._space;
 			outMsg = outMsg + "q";
 			outMsg = appendBool(outMsg, _player._space);

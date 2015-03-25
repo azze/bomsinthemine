@@ -45,7 +45,6 @@ class PlayState extends FlxState
 	public var _gridSize:Int = 16;
 	public var _grid:Array<Array<Bool>>;
 	public var gameType:Float = 0; 
-	public var gameMode:Float = 0;
 	public var sndExplosion:FlxSound;
 	public var sndCoin:FlxSound;
 	public var sndHit:FlxSound;
@@ -80,6 +79,7 @@ class PlayState extends FlxState
 		
 		
 	}
+	
 	
 	/**---------------- Reality and all its things ----------------*/
 	

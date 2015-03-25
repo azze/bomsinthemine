@@ -29,17 +29,26 @@ class ClientState extends PlayState
 	var _space:Bool = false;
 	var msg:String;
 	var changes:Bool = false;
+	public var ip:String = "";
+	
+	
 	override public function create():Void
 	{
 		super.create();
-		client = new Client();
-		client.write(playerClass + "\n");
 		
-		clientThread = Thread.create(communicate);
 		orders = new List<String>();
 		
 		
 	}
+	public function setupIP():Void
+	{
+		client = new Client(ip);
+		client.write(playerClass + "\n");
+		
+		clientThread = Thread.create(communicate);
+		
+	}
+	
 	
 	public function communicate()
 	{
@@ -96,7 +105,7 @@ class ClientState extends PlayState
 			_grpPlayer.members[1]._C = _C;
 			changes = true;
 		}
-		if (_X = FlxG.keys.justPressed.X) {
+		if (_X != FlxG.keys.justPressed.X) {
 			_X = !_X;
 			msg = msg + "x";
 			msg = appendBool(msg, _X);
@@ -104,7 +113,7 @@ class ClientState extends PlayState
 			_grpPlayer.members[1]._X = _X;
 			changes = true;
 		}
-		if (_V = FlxG.keys.pressed.V) {
+		if (_V != FlxG.keys.pressed.V) {
 			_V = !_V;
 			msg = msg + "v";
 			msg = appendBool(msg, _V);
@@ -112,7 +121,7 @@ class ClientState extends PlayState
 			_grpPlayer.members[1]._V = _V;
 			changes = true;
 		}
-		if (_space = FlxG.keys.pressed.SPACE) {
+		if (_space != FlxG.keys.pressed.SPACE) {
 			_space = !_space;
 			msg = msg + "q";
 			msg = appendBool(msg, _space);

@@ -79,6 +79,7 @@ class Jim extends Player
 	}
 	public function barrier():Void
 	{
+		trace("suck my balls");
 		var point:FlxPoint; 
 			switch(facing) {
 				case FlxObject.LEFT:
