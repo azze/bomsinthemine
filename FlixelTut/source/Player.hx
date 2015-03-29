@@ -47,6 +47,8 @@ class Player extends FlxSprite
 	public var _space:Bool = false;
 	public var id = 0;
 	public var type = 0;
+	public var HP:Float = 0;
+	public var cash:Int = 0;
 	
 	
 	
@@ -93,7 +95,9 @@ class Player extends FlxSprite
 		}
 	}
 	
-	
+	public function weaken(pain:Float) {
+		HP = HP - pain;
+	}
 	
 	
 	/**------ it can move ------*/

@@ -86,7 +86,7 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-		_hud.updateHUD(_health, _money, _weapons, _ready);
+		_hud.updateHUD(Math.floor(_player.HP), _player.cash, _weapons, _ready);
 	}
 	
 	/**-----------------------Funktions Funktionen :P ------------------------*/

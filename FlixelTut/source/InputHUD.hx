@@ -67,7 +67,9 @@ class InputHUD extends FlxTypedGroup<FlxSprite>
 	
 	private function clickCancel():Void
 	{
-		FlxTween.num(1, 0, .66, { ease:FlxEase.circOut, complete:finishFadeOut, startDelay:0 }, updateAlpha);
+		_textInput.visible = false;
+		_btnCncl.visible = false;
+		FlxTween.num(1, 0, .66, { ease:FlxEase.circOut, complete:finishFadeOut}, updateAlpha);
 	}
 	
 	public function getText():String
@@ -79,7 +81,8 @@ class InputHUD extends FlxTypedGroup<FlxSprite>
 	
 	public function initiateInput():Void
 	{
-		
+		_textInput.visible = true;
+		_btnCncl.visible = true;
 		visible = true;
 		
 		FlxTween.num(0, 1, .66, { ease:FlxEase.circOut, complete:finishFadeIn }, updateAlpha);

@@ -123,13 +123,15 @@ class ServerState extends PlayState
 							}
 						}
 					}
-					
-					var poin2:FlxPoint = ply.getMidpoint();
-					var dist2:Float = distance(poin2, bob.getMidpoint());
+					for (j in 0..._grpPlayer.length)
+					{
+						var poin2:FlxPoint = _grpPlayer.members[j].getMidpoint();
+						var dist2:Float = distance(poin2, bob.getMidpoint());
 				
-					if (dist2 < bob.radius) {
-						playerDamage(bob.damage * (bob.radius - dist2) / bob.radius);
-					}
+						if (dist2 < bob.radius) {
+							 _grpPlayer.members[j].weaken(bob.damage * (bob.radius - dist2) / bob.radius);
+						}	
+					}	
 					bob.kill();
 					bob.exploded = false;
 					bob.destroy();
